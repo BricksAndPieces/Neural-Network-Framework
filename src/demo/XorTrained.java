@@ -1,7 +1,7 @@
 package demo;
 
-import ai.neuralnetwork.Function;
-import ai.training.TrainedNet;
+import neuralnetwork.core.Function;
+import neuralnetwork.training.TrainedNet;
 
 import java.util.Arrays;
 

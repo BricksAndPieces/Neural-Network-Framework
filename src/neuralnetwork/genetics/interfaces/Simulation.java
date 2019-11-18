@@ -1,6 +1,6 @@
-package ai.genetics.interfaces;
+package neuralnetwork.genetics.interfaces;
 
-import ai.genetics.GeneticNet;
+import neuralnetwork.genetics.GeneticNet;
 
 // TODO Rename it to something that makes more sense
 public interface Simulation {

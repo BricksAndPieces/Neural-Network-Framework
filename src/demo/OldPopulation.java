@@ -1,8 +1,8 @@
 package demo;
 
-import ai.genetics.interfaces.Simulation;
-import ai.genetics.GeneticNet;
-import ai.neuralnetwork.NeuralNetSettings;
+import neuralnetwork.genetics.interfaces.Simulation;
+import neuralnetwork.genetics.GeneticNet;
+import neuralnetwork.core.NeuralNetSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;

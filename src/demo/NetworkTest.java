@@ -1,8 +1,8 @@
 package demo;
 
-import ai.neuralnetwork.Function;
-import ai.neuralnetwork.Matrix;
-import ai.neuralnetwork.NeuralNet;
+import neuralnetwork.core.Function;
+import neuralnetwork.core.Matrix;
+import neuralnetwork.core.NeuralNet;
 
 import java.util.Arrays;
 

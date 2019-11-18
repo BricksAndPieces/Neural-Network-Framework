@@ -1,8 +1,8 @@
-package ai.genetics;
+package neuralnetwork.genetics;
 
-import ai.neuralnetwork.Function;
-import ai.neuralnetwork.NeuralNetSettings;
-import ai.neuralnetwork.NeuralNet;
+import neuralnetwork.core.Function;
+import neuralnetwork.core.NeuralNetSettings;
+import neuralnetwork.core.NeuralNet;
 
 @SuppressWarnings("All")
 public class GeneticNet extends NeuralNet implements Comparable<GeneticNet> {

@@ -1,15 +1,13 @@
 package demo;
 
-import ai.genetics.Population;
-import ai.genetics.interfaces.Simulation;
-import ai.genetics.GeneticNet;
-import ai.neuralnetwork.Function;
-import ai.neuralnetwork.Matrix;
-import ai.neuralnetwork.NeuralNetSettings;
+import neuralnetwork.genetics.Population;
+import neuralnetwork.genetics.interfaces.Simulation;
+import neuralnetwork.genetics.GeneticNet;
+import neuralnetwork.core.Function;
+import neuralnetwork.core.Matrix;
+import neuralnetwork.core.NeuralNetSettings;
 
-@SuppressWarnings("All")
-public class XOR implements Simulation
-{
+public class XOR implements Simulation  {
 
     public static void main(String[] args) {
         XOR xor = new XOR();

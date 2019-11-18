@@ -1,4 +1,4 @@
-package ai.neuralnetwork;
+package neuralnetwork.core;
 
 import util.Copyable;
 import util.DimensionException;

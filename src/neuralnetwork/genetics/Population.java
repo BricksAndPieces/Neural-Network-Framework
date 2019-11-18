@@ -1,8 +1,8 @@
-package ai.genetics;
+package neuralnetwork.genetics;
 
-import ai.genetics.interfaces.Simulation;
-import ai.neuralnetwork.NeuralNet;
-import ai.neuralnetwork.NeuralNetSettings;
+import neuralnetwork.genetics.interfaces.Simulation;
+import neuralnetwork.core.NeuralNet;
+import neuralnetwork.core.NeuralNetSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;

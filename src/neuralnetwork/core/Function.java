@@ -1,4 +1,4 @@
-package ai.neuralnetwork;
+package neuralnetwork.core;
 
 @SuppressWarnings("All")
 public interface Function {

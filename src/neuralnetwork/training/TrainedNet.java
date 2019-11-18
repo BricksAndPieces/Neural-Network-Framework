@@ -1,8 +1,8 @@
-package ai.training;
+package neuralnetwork.training;
 
-import ai.neuralnetwork.Function;
-import ai.neuralnetwork.Matrix;
-import ai.neuralnetwork.NeuralNet;
+import neuralnetwork.core.Function;
+import neuralnetwork.core.Matrix;
+import neuralnetwork.core.NeuralNet;
 
 @SuppressWarnings("All")
 public class TrainedNet extends NeuralNet {

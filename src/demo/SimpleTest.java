@@ -1,9 +1,9 @@
 package demo;
 
-import ai.genetics.interfaces.Simulation;
-import ai.genetics.GeneticNet;
-import ai.neuralnetwork.Function;
-import ai.neuralnetwork.NeuralNetSettings;
+import neuralnetwork.genetics.interfaces.Simulation;
+import neuralnetwork.genetics.GeneticNet;
+import neuralnetwork.core.Function;
+import neuralnetwork.core.NeuralNetSettings;
 
 @SuppressWarnings("All")
 public class SimpleTest implements Simulation

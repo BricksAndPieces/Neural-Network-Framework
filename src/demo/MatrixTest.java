@@ -1,6 +1,6 @@
 package demo;
 
-import ai.neuralnetwork.Matrix;
+import neuralnetwork.core.Matrix;
 
 public class MatrixTest {
 
