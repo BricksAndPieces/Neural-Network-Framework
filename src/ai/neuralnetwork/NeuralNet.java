@@ -1,0 +1,116 @@
+package ai.neuralnetwork;
+
+import util.Copyable;
+
+import java.util.Arrays;
+import java.util.Random;
+
+public class NeuralNet implements Copyable<NeuralNet> {
+
+    protected Matrix[] weights; // Multi dimensional - Each matrix contains all weights between two layers
+    protected Matrix[] biases; // One dimensional - Each matrix contains a list of biases for each 'output' node
+
+    private Function actFunc;
+    private int[] layers;
+
+    public NeuralNet(NeuralNetSettings settings) {
+        this(settings.getLayers(), settings.getActFunc());
+    }
+
+    public NeuralNet(int[] layers, Function actFunc) {
+        this.actFunc = actFunc;
+        this.layers = layers;
+
+        // Construct net of weights
+        weights = new Matrix[layers.length-1];
+        for(int i = 0; i < weights.length; i++) {
+            weights[i] = new Matrix(layers[i], layers[i+1]);
+            weights[i] = weights[i].randomize();
+        }
+
+        // Construct net of biases
+        biases = new Matrix[layers.length-1];
+        for(int i = 0; i < biases.length; i++) {
+            biases[i] = new Matrix(1, layers[i+1]);
+            biases[i] = biases[i].randomize();
+        }
+    }
+
+    public double[] feedForward(double[] input) {
+        Matrix matrix = new Matrix(input);
+        for(int i = 0; i < weights.length; i++)
+            matrix = matrix.dotProduct(weights[i]).add(biases[i]).function(actFunc);
+
+        double[] output = new double[layers[layers.length-1]];
+        for(int i = 0; i < output.length; i++)
+            output[i] = matrix.getData()[0][i];
+
+        return output;
+    }
+
+    // -------------------------------------------------------------------------------------------------- //
+
+    public NeuralNet mutate(double chance, Random rng) {
+        NeuralNet n = copy();
+        for(int i = 0; i < weights.length; i++) {
+            n.weights[i] = weights[i].mutate(chance, rng);
+            n.biases[i] = biases[i].mutate(chance, rng);
+        }
+
+        return n;
+    }
+
+    public NeuralNet crossover(NeuralNet o) {
+        NeuralNet n = new NeuralNet(layers, actFunc);
+        for(int i = 0; i < weights.length; i++) {
+            n.weights[i] = weights[i].crossover(o.weights[i]);
+            n.biases[i] = biases[i].crossover(o.biases[i]);
+        }
+
+        return n;
+    }
+
+    // -------------------------------------------------------------------------------------------------- //
+
+    public Matrix[] getWeights() {
+        return weights;
+    }
+
+    public void setWeights(Matrix[] weights) {
+        this.weights = weights;
+    }
+
+    public Matrix[] getBiases() {
+        return biases;
+    }
+
+    public void setBiases(Matrix[] biases) {
+        this.biases = biases;
+    }
+
+    public Function getActFunc() {
+        return actFunc;
+    }
+
+    public int[] getLayers() {
+        return layers;
+    }
+
+    // -------------------------------------------------------------------------------------------------- //
+
+    @Override
+    public NeuralNet copy() {
+        NeuralNet n = new NeuralNet(layers, actFunc);
+        for(int i = 0; i < weights.length; i++) {
+            n.weights[i] = weights[i].copy();
+            n.biases[i] = biases[i].copy();
+        }
+
+        return n;
+    }
+
+    @Override
+    public String toString() {
+        return "NeuralNet[layers="+Arrays.toString(layers)+"]";
+    }
+}
