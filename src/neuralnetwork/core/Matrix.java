@@ -1,7 +1,7 @@
 package neuralnetwork.core;
 
-import util.Copyable;
-import util.DimensionException;
+import neuralnetwork.util.Copyable;
+import neuralnetwork.util.DimensionException;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package util;
+package neuralnetwork.util;
 
 public class DimensionException extends RuntimeException {
 

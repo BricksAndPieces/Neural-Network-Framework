@@ -1,4 +1,4 @@
-package util;
+package neuralnetwork.util;
 
 public interface Copyable<T extends Copyable<T>> {
 

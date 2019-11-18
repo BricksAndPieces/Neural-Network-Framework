@@ -1,6 +1,6 @@
 package neuralnetwork.core;
 
-import util.Copyable;
+import neuralnetwork.util.Copyable;
 
 import java.util.Arrays;
 import java.util.Random;
