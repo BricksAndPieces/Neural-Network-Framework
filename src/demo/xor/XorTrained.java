@@ -1,4 +1,4 @@
-package demo;
+package demo.xor;
 
 import neuralnetwork.core.Function;
 import neuralnetwork.training.TrainedNet;

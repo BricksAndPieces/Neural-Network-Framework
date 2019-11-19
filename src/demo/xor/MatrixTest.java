@@ -1,4 +1,4 @@
-package demo;
+package demo.xor;
 
 import neuralnetwork.core.Matrix;
 

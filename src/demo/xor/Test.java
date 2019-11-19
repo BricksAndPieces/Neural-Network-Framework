@@ -1,4 +1,4 @@
-package demo;
+package demo.xor;
 
 public class Test
 {

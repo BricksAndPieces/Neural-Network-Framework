@@ -1,4 +1,4 @@
-package demo;
+package demo.xor;
 
 import neuralnetwork.genetics.Population;
 import neuralnetwork.genetics.interfaces.Simulation;
