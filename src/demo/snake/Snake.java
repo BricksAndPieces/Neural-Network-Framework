@@ -93,6 +93,41 @@ public class Snake implements Simulation, Copyable<Snake> {
         return p.x >= 0 && p.x < worldWidth && p.y >= 0 && p.y < worldHeight;
     }
 
+    @Override
+    public boolean update(GeneticNet net) {
+        double[] input = SnakeUtil.getVision(this);
+        double[] output = net.feedForward(input);
+
+        Direction dir = null;
+        double max = Double.MIN_VALUE;
+        for(int i = 0; i < output.length; i++) {
+            if(output[i] > max) {
+                max = output[i];
+                dir = Direction.values()[i];
+            }
+        }
+
+        setDirection(dir);
+        move();
+        return gameOver;
+    }
+
+    @Override
+    public double calculateFitness(GeneticNet net) {
+        int applesEaten = foodLocs.size() - 1;
+        double fitness = Math.pow(2, applesEaten) + totalMoves;
+        return fitness;
+    }
+
+    @Override
+    public Snake copy() {
+        Snake copy = new Snake(worldWidth, worldHeight);
+        copy.replayFood.addAll(foodLocs);
+        copy.foodLocs.clear();
+        copy.generateFood();
+        return copy;
+    }
+
     public Direction getDirection() {
         return direction;
     }
@@ -132,26 +167,5 @@ public class Snake implements Simulation, Copyable<Snake> {
 
     public int getWorldHeight() {
         return worldHeight;
-    }
-
-    @Override
-    public boolean update(GeneticNet net) {
-        return false;
-    }
-
-    @Override
-    public double calculateFitness(GeneticNet net) {
-        int applesEaten = foodLocs.size() - 1;
-        double fitness = Math.pow(2, applesEaten) + totalMoves;
-        return fitness;
-    }
-
-    @Override
-    public Snake copy() {
-        Snake copy = new Snake(worldWidth, worldHeight);
-        copy.replayFood.addAll(foodLocs);
-        copy.foodLocs.clear();
-        copy.generateFood();
-        return copy;
     }
 }
