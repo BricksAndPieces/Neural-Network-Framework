@@ -1,7 +1,6 @@
 package neuralnetwork.genetics;
 
 import neuralnetwork.genetics.interfaces.Simulation;
-import neuralnetwork.core.NeuralNet;
 import neuralnetwork.core.NeuralNetSettings;
 
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.Random;
 
 public class Population {
 
-    private int popSize;
+    private final int popSize;
     private int generation = 1;
 
     private final NeuralNetSettings settings;
