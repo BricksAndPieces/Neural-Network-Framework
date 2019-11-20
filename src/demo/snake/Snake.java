@@ -1,5 +1,7 @@
 package demo.snake;
 
+import neuralnetwork.genetics.GeneticNet;
+import neuralnetwork.genetics.interfaces.Simulation;
 import neuralnetwork.util.Copyable;
 
 import java.awt.*;
@@ -8,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("All")
-public class Snake implements Copyable<Snake> {
+public class Snake implements Simulation, Copyable<Snake> {
 
     private final int worldWidth;
     private final int worldHeight;
@@ -16,9 +18,12 @@ public class Snake implements Copyable<Snake> {
     private Direction direction = Direction.DOWN;
     private Direction nextDirection = Direction.DOWN;
     private boolean gameOver = false;
+    private int totalMoves = 0;
     private int score = 0;
 
     private Point food;
+    private int movesTillDead;
+
     private final List<Point> snakeParts = new ArrayList<>();
     private final List<Point> replayFood = new ArrayList<>();
     private final List<Point> foodLocs = new ArrayList<>();
@@ -31,13 +36,20 @@ public class Snake implements Copyable<Snake> {
         this.direction = Direction.DOWN;
         this.nextDirection = Direction.DOWN;
         this.gameOver = false;
+        this.movesTillDead = width*height/2;
 
         this.snakeParts.add(new Point(width / 2, height / 2));
         generateFood();
     }
 
     public void move() {
+        totalMoves++;
         direction = nextDirection;
+        if(movesTillDead-- <= 0) {
+            gameOver = true;
+            return;
+        }
+
         Point futureHead = new Point(snakeParts.get(0).x + direction.getX(), snakeParts.get(0).y + direction.getY());
         if(!pointWithinWorld(futureHead))
             gameOver = true; // Collided with wall
@@ -51,6 +63,7 @@ public class Snake implements Copyable<Snake> {
         if(futureHead.equals(food)) {
             snakeParts.add(snakeParts.get(snakeParts.size()-1));
             score++;
+            movesTillDead = worldWidth*worldHeight/2;
             generateFood();
         }
     }
@@ -105,6 +118,10 @@ public class Snake implements Copyable<Snake> {
         return gameOver;
     }
 
+    public int getTotalMoves() {
+        return totalMoves;
+    }
+
     public int getScore() {
         return score;
     }
@@ -115,6 +132,18 @@ public class Snake implements Copyable<Snake> {
 
     public int getWorldHeight() {
         return worldHeight;
+    }
+
+    @Override
+    public boolean update(GeneticNet net) {
+        return false;
+    }
+
+    @Override
+    public double calculateFitness(GeneticNet net) {
+        int applesEaten = foodLocs.size() - 1;
+        double fitness = Math.pow(2, applesEaten) + totalMoves;
+        return fitness;
     }
 
     @Override
