@@ -1,23 +1,27 @@
 package demo.snake;
 
+import neuralnetwork.util.Copyable;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("All")
-public class Snake {
+public class Snake implements Copyable<Snake> {
 
     private final int worldWidth;
     private final int worldHeight;
 
-    private Direction direction;
-    private Direction nextDirection;
-    private boolean gameOver;
+    private Direction direction = Direction.DOWN;
+    private Direction nextDirection = Direction.DOWN;
+    private boolean gameOver = false;
     private int score = 0;
 
     private Point food;
-    private final List<Point> snakeParts;
+    private final List<Point> snakeParts = new ArrayList<>();
+    private final List<Point> replayFood = new ArrayList<>();
+    private final List<Point> foodLocs = new ArrayList<>();
 
     private static final Random rng = new Random();
 
@@ -28,7 +32,6 @@ public class Snake {
         this.nextDirection = Direction.DOWN;
         this.gameOver = false;
 
-        this.snakeParts = new ArrayList<>();
         this.snakeParts.add(new Point(width / 2, height / 2));
         generateFood();
     }
@@ -47,31 +50,30 @@ public class Snake {
 
         if(futureHead.equals(food)) {
             snakeParts.add(snakeParts.get(snakeParts.size()-1));
+            score++;
             generateFood();
         }
     }
 
-    public void reset() {
-        direction = Direction.DOWN;
-        nextDirection = Direction.DOWN;
-        gameOver = false;
-
-        snakeParts.clear();
-        snakeParts.add(new Point(worldWidth / 2, worldHeight / 2));
-        generateFood();
-    }
-
     private void generateFood() {
-        boolean validLoc = false;
-       while(!validLoc) {
-           int locIndex = rng.nextInt(worldWidth * worldHeight);
-           Point attempt = new Point(locIndex % worldWidth, locIndex / worldHeight);
+        if(!replayFood.isEmpty()) {
+            food = replayFood.get(0);
+            replayFood.remove(0);
+            foodLocs.add(food);
+            return;
+        }
 
-           if(!snakeParts.contains(attempt)) {
-               validLoc = true;
-               food = attempt;
-           }
-       }
+        boolean validLoc = false;
+        while(!validLoc) {
+            int locIndex = rng.nextInt(worldWidth * worldHeight);
+            Point attempt = new Point(locIndex % worldWidth, locIndex / worldHeight);
+
+            if(!snakeParts.contains(attempt)) {
+                validLoc = true;
+                food = attempt;
+                foodLocs.add(food);
+            }
+        }
     }
 
     private boolean pointWithinWorld(Point p) {
@@ -113,5 +115,14 @@ public class Snake {
 
     public int getWorldHeight() {
         return worldHeight;
+    }
+
+    @Override
+    public Snake copy() {
+        Snake copy = new Snake(worldWidth, worldHeight);
+        copy.replayFood.addAll(foodLocs);
+        copy.foodLocs.clear();
+        copy.generateFood();
+        return copy;
     }
 }
