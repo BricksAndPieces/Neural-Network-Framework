@@ -89,7 +89,7 @@ public class Snake implements Simulation, Copyable<Snake> {
         }
     }
 
-    private boolean pointWithinWorld(Point p) {
+    public boolean pointWithinWorld(Point p) {
         return p.x >= 0 && p.x < worldWidth && p.y >= 0 && p.y < worldHeight;
     }
 
@@ -135,6 +135,10 @@ public class Snake implements Simulation, Copyable<Snake> {
     public void setDirection(Direction d) {
         if(!direction.isOpposite(d))
             nextDirection = d;
+    }
+
+    public List<Point> getSnakeParts() {
+        return snakeParts;
     }
 
     public List<Point> getBodyLocations() {

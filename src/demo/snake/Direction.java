@@ -1,7 +1,5 @@
 package demo.snake;
 
-import java.awt.event.KeyEvent;
-
 public enum Direction {
 
     UP(0,1),
@@ -15,6 +13,16 @@ public enum Direction {
     Direction(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public static Direction getInstance(int x, int y) {
+        for(Direction d : values()) {
+            if(d.x == x && d.y == y)
+                return d;
+        }
+
+        // Invalid inputs
+        return null;
     }
 
     public boolean isOpposite(Direction other) {
