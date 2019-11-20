@@ -3,8 +3,8 @@ package neuralnetwork.core;
 import neuralnetwork.util.Copyable;
 
 import java.util.Arrays;
-import java.util.Random;
 
+@SuppressWarnings("All")
 public class NeuralNet implements Copyable<NeuralNet> {
 
     protected Matrix[] weights; // Multi dimensional - Each matrix contains all weights between two layers
@@ -48,30 +48,6 @@ public class NeuralNet implements Copyable<NeuralNet> {
         return output;
     }
 
-    // -------------------------------------------------------------------------------------------------- //
-
-    public NeuralNet mutate(double chance, Random rng) {
-        NeuralNet n = copy();
-        for(int i = 0; i < weights.length; i++) {
-            n.weights[i] = weights[i].mutate(chance, rng);
-            n.biases[i] = biases[i].mutate(chance, rng);
-        }
-
-        return n;
-    }
-
-    public NeuralNet crossover(NeuralNet o) {
-        NeuralNet n = new NeuralNet(layers, actFunc);
-        for(int i = 0; i < weights.length; i++) {
-            n.weights[i] = weights[i].crossover(o.weights[i]);
-            n.biases[i] = biases[i].crossover(o.biases[i]);
-        }
-
-        return n;
-    }
-
-    // -------------------------------------------------------------------------------------------------- //
-
     public Matrix[] getWeights() {
         return weights;
     }
@@ -96,16 +72,27 @@ public class NeuralNet implements Copyable<NeuralNet> {
         return layers;
     }
 
-    // -------------------------------------------------------------------------------------------------- //
+    public Matrix[] copyWeights() {
+        Matrix[] copy = new Matrix[weights.length];
+        for(int i = 0; i < weights.length; i++)
+            copy[i] = weights[i].copy();
+
+        return copy;
+    }
+
+    public Matrix[] copyBiases() {
+        Matrix[] copy = new Matrix[biases.length];
+        for(int i = 0; i < biases.length; i++)
+            copy[i] = biases[i].copy();
+
+        return copy;
+    }
 
     @Override
     public NeuralNet copy() {
         NeuralNet n = new NeuralNet(layers, actFunc);
-        for(int i = 0; i < weights.length; i++) {
-            n.weights[i] = weights[i].copy();
-            n.biases[i] = biases[i].copy();
-        }
-
+        n.setWeights(copyWeights());
+        n.setBiases(copyBiases());
         return n;
     }
 

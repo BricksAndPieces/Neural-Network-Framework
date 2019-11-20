@@ -1,8 +1,7 @@
 package neuralnetwork.core;
 
 @SuppressWarnings("All")
-public class NeuralNetSettings
-{
+public class NeuralNetSettings {
 
     private final int[] layers;
     private final Function actFunc;

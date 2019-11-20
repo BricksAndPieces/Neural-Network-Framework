@@ -52,7 +52,7 @@ public class Population {
 
         // Add best players from last generation
         for(int i = 0; i < networks.size()/2; i++)
-            children.add(GeneticNet.fromNeuralNet(networks.get(i).copy()));
+            children.add((GeneticNet) networks.get(i).copy());
 
         // 10% of networks in next gen are random
         for(int i = 0; i < networks.size()/10; i++)
@@ -63,14 +63,14 @@ public class Population {
         while(children.size() < networks.size()) {
             GeneticNet g1 = networks.get((int) (Math.random() * topHalf));
             GeneticNet g2 = networks.get((int) (Math.random() * topHalf));
-            GeneticNet child = GeneticNet.fromNeuralNet(g1.crossover(g2));
+            GeneticNet child = g1.crossover(g2);
             children.add(child);
         }
 
         // Mutate next generation
         for(int i = 1; i < children.size(); i++) {
-            NeuralNet mutated = children.get(i).mutate(mutationChance, rng);
-            children.set(i, GeneticNet.fromNeuralNet(mutated));
+            GeneticNet mutated = children.get(i).mutate(mutationChance, rng);
+            children.set(i, mutated);
         }
 
         generation++;
