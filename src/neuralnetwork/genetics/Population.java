@@ -28,31 +28,22 @@ public class Population {
     }
 
     public void simulateGeneration(Simulation sim) {
-        networks.forEach(n -> n.setFitness(sim.calculateFitness(n)));
+        networks.stream().filter(n -> !n.isDead()).forEach(n -> n.setDead(sim.update(n)));
+        if(isGenerationCompleted())
+            networks.forEach(n -> n.setFitness(sim.calculateFitness(n)));
     }
 
-//    public void evolveNextGeneration(double mutationChance) {
-//        sortGeneration();
-//        List<GeneticNet> children = new ArrayList<>();
-//        children.add(GeneticNet.fromNeuralNet(getBestPlayer().copy()));
-//
-//        for(int i = 0; i < children.size()*0.9; i++)
-//            children.add(GeneticNet.fromNeuralNet(networks.get(i).mutate(mutationChance, rng)));
-//
-//        while(children.size() < networks.size())
-//            children.add(new GeneticNet(settings));
-//
-//        generation++;
-//        networks = children;
-//    }
+    public boolean isGenerationCompleted() {
+        return networks.stream().allMatch(GeneticNet::isDead);
+    }
 
     public void evolveNextGeneration(double mutationChance) {
-        sortGeneration();
         List<GeneticNet> children = new ArrayList<>();
+        sortGeneration();
 
         // Add best players from last generation
         for(int i = 0; i < networks.size()/2; i++)
-            children.add((GeneticNet) networks.get(i).copy());
+            children.add(networks.get(i).copy());
 
         // 10% of networks in next gen are random
         for(int i = 0; i < networks.size()/10; i++)

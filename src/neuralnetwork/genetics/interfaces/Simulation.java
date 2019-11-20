@@ -2,8 +2,9 @@ package neuralnetwork.genetics.interfaces;
 
 import neuralnetwork.genetics.GeneticNet;
 
-// TODO Rename it to something that makes more sense
 public interface Simulation {
+
+    boolean update(GeneticNet net);
 
     double calculateFitness(GeneticNet net);
 }
