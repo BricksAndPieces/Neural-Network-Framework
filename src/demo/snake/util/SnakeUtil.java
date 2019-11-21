@@ -1,4 +1,7 @@
-package demo.snake;
+package demo.snake.util;
+
+import demo.snake.Snake;
+import demo.snake.util.Direction;
 
 import java.awt.*;
 

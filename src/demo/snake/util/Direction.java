@@ -1,4 +1,4 @@
-package demo.snake;
+package demo.snake.util;
 
 public enum Direction {
 

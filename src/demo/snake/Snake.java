@@ -1,5 +1,7 @@
 package demo.snake;
 
+import demo.snake.util.Direction;
+import demo.snake.util.SnakeUtil;
 import neuralnetwork.genetics.GeneticNet;
 import neuralnetwork.genetics.interfaces.Simulation;
 import neuralnetwork.util.Copyable;
@@ -91,6 +93,12 @@ public class Snake implements Simulation, Copyable<Snake> {
 
     public boolean pointWithinWorld(Point p) {
         return p.x >= 0 && p.x < worldWidth && p.y >= 0 && p.y < worldHeight;
+    }
+
+    @Override
+    public Simulation newInstance()
+    {
+        return null; // todo
     }
 
     @Override
