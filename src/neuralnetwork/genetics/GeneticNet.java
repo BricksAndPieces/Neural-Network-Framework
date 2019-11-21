@@ -1,18 +1,20 @@
 package neuralnetwork.genetics;
 
 import neuralnetwork.core.Function;
-import neuralnetwork.core.Matrix;
 import neuralnetwork.core.NeuralNetSettings;
 import neuralnetwork.core.NeuralNet;
+import neuralnetwork.genetics.interfaces.Simulation;
 
 import java.util.Arrays;
 import java.util.Random;
 
 @SuppressWarnings("All")
-public class GeneticNet extends NeuralNet implements Comparable<GeneticNet> {
+public class GeneticNet<T extends Simulation<T>> extends NeuralNet implements Comparable<GeneticNet> {
 
     private double fitness = 0;
     private boolean dead = false;
+
+    private T simulation;
 
     public GeneticNet(NeuralNetSettings settings) {
         super(settings);
@@ -22,7 +24,7 @@ public class GeneticNet extends NeuralNet implements Comparable<GeneticNet> {
         super(layers, actFunc);
     }
 
-    public GeneticNet mutate(double chance, Random rng) {
+    public GeneticNet<T> mutate(double chance, Random rng) {
         GeneticNet copy = (GeneticNet) copy();
         for(int i = 0; i < weights.length; i++) {
             copy.weights[i] = weights[i].mutate(chance, rng);
@@ -32,7 +34,7 @@ public class GeneticNet extends NeuralNet implements Comparable<GeneticNet> {
         return copy;
     }
 
-    public GeneticNet crossover(GeneticNet o) {
+    public GeneticNet<T> crossover(GeneticNet<T> o) {
         GeneticNet copy = (GeneticNet) copy();
         for(int i = 0; i < weights.length; i++) {
             copy.weights[i] = weights[i].crossover(o.weights[i]);
@@ -58,13 +60,21 @@ public class GeneticNet extends NeuralNet implements Comparable<GeneticNet> {
         this.dead = dead;
     }
 
+    public T getSimulation() {
+        return simulation;
+    }
+
+    public void setSimulation(T simulation) {
+        this.simulation = simulation;
+    }
+
     @Override
     public int compareTo(GeneticNet o) {
         return Double.compare(fitness, o.fitness);
     }
 
     @Override
-    public GeneticNet copy() {
+    public GeneticNet<T> copy() {
         GeneticNet copy = new GeneticNet(getLayers(), getActFunc());
         copy.setWeights(copyWeights());
         copy.setBiases(copyBiases());

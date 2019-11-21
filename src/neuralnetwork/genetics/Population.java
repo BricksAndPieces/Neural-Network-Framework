@@ -3,33 +3,36 @@ package neuralnetwork.genetics;
 import neuralnetwork.genetics.interfaces.Simulation;
 import neuralnetwork.core.NeuralNetSettings;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-public class Population {
+public class Population<T extends Simulation<T>> {
 
     private final int popSize;
     private int generation = 1;
 
     private final NeuralNetSettings settings;
-    private List<GeneticNet> networks = new ArrayList<>();
+    private List<GeneticNet<T>> networks = new ArrayList<>();
+    private final T simulation;
+
     private static final Random rng = new Random();
 
-    public Population(int popSize, NeuralNetSettings settings) {
+    public Population(int popSize, T simulation, NeuralNetSettings settings) {
         this.popSize = popSize;
         this.settings = settings;
+        this.simulation = simulation;
 
         // Add random networks for the initial population
-        for(int i = 0; i < popSize; i++)
-            networks.add(new GeneticNet(settings));
+        for(int i = 0; i < popSize; i++) {
+            GeneticNet<T> net = new GeneticNet<>(settings);
+            net.setSimulation(simulation.newInstance());
+            networks.add(net);
+        }
     }
 
-    public void simulateGeneration(Simulation sim) {
-        networks.stream().filter(n -> !n.isDead()).forEach(n -> n.setDead(sim.update(n)));
+    public void simulateGeneration() {
+        networks.stream().filter(n -> !n.isDead()).forEach(n -> n.setDead(n.getSimulation().update(n)));
         if(isGenerationCompleted())
-            networks.forEach(n -> n.setFitness(sim.calculateFitness(n)));
+            networks.forEach(n -> n.setFitness(n.getSimulation().calculateFitness(n)));
     }
 
     public boolean isGenerationCompleted() {
@@ -37,7 +40,7 @@ public class Population {
     }
 
     public void evolveNextGeneration(double mutationChance) {
-        List<GeneticNet> children = new ArrayList<>();
+        List<GeneticNet<T>> children = new ArrayList<>();
         sortGeneration();
 
         // Add best players from last generation
@@ -46,25 +49,28 @@ public class Population {
 
         // 10% of networks in next gen are random
         for(int i = 0; i < networks.size()/10; i++)
-            children.add(new GeneticNet(settings));
+            children.add(new GeneticNet<>(settings));
 
         // Rest of population is children from the top 50%
         int topHalf = networks.size();
         while(children.size() < networks.size()) {
-            GeneticNet g1 = networks.get((int) (Math.random() * topHalf));
-            GeneticNet g2 = networks.get((int) (Math.random() * topHalf));
-            GeneticNet child = g1.crossover(g2);
+            GeneticNet<T> g1 = networks.get((int) (Math.random() * topHalf));
+            GeneticNet<T> g2 = networks.get((int) (Math.random() * topHalf));
+            GeneticNet<T> child = g1.crossover(g2);
             children.add(child);
         }
 
         // Mutate next generation
         for(int i = 1; i < children.size(); i++) {
-            GeneticNet mutated = children.get(i).mutate(mutationChance, rng);
+            GeneticNet<T> mutated = children.get(i).mutate(mutationChance, rng);
             children.set(i, mutated);
         }
 
         generation++;
         networks = children;
+
+        for(GeneticNet<T> g : networks)
+            g.setSimulation(simulation.newInstance());
     }
 
     private void sortGeneration() {

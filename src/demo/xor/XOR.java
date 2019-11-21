@@ -7,14 +7,14 @@ import neuralnetwork.core.Function;
 import neuralnetwork.core.Matrix;
 import neuralnetwork.core.NeuralNetSettings;
 
-public class XOR implements Simulation  {
+public class XOR implements Simulation<XOR>  {
 
     public static void main(String[] args) {
         XOR xor = new XOR();
         int[] layers = {2, 2, 1};
         Function actFunc = Function.SIGMOID;
         NeuralNetSettings settings = new NeuralNetSettings(layers, actFunc);
-        Population pop = new Population(20, settings);
+        Population<XOR> pop = new Population<>(20, xor, settings);
 
         double mutationChance = 0.05;
 
@@ -22,7 +22,7 @@ public class XOR implements Simulation  {
             if(pop.getGeneration() % 1000 == 0)
             System.out.print("Generation " + pop.getGeneration() + " | ");
             if(!pop.isGenerationCompleted())
-            pop.simulateGeneration(xor);
+            pop.simulateGeneration();
             if(pop.getGeneration() % 1000 == 0)
             System.out.println("Best Fitness: " + pop.getBestFitness());
 
@@ -53,6 +53,11 @@ public class XOR implements Simulation  {
         for(Matrix m : pop.getBestPlayer().getBiases()) {
             System.out.println(m);
         }
+    }
+
+    @Override
+    public XOR newInstance() {
+        return new XOR();
     }
 
     @Override
