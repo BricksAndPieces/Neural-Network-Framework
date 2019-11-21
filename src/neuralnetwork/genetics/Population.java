@@ -30,13 +30,7 @@ public class Population<T extends Simulation<T>> {
     }
 
     public void simulateGeneration() {
-        networks.stream().filter(n -> !n.isDead()).forEach(n -> n.setDead(n.getSimulation().update(n)));
-        if(isGenerationCompleted())
-            networks.forEach(n -> n.setFitness(n.getSimulation().calculateFitness(n)));
-    }
-
-    public boolean isGenerationCompleted() {
-        return networks.stream().allMatch(GeneticNet::isDead);
+        networks.forEach(GeneticNet::simulate);
     }
 
     public void evolveNextGeneration(double mutationChance) {

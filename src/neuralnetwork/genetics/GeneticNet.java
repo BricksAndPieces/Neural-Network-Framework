@@ -44,6 +44,10 @@ public class GeneticNet<T extends Simulation<T>> extends NeuralNet implements Co
         return copy;
     }
 
+    public void simulate() {
+        fitness = simulation.simulate(this);
+    }
+
     public double getFitness() {
         return fitness;
     }
