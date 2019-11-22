@@ -8,11 +8,12 @@ import neuralnetwork.util.Copyable;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("All")
-public class Snake implements Simulation, Copyable<Snake> {
+public class Snake implements Simulation<Snake>, Copyable<Snake> {
 
     private final int worldWidth;
     private final int worldHeight;
@@ -65,7 +66,7 @@ public class Snake implements Simulation, Copyable<Snake> {
         if(futureHead.equals(food)) {
             snakeParts.add(snakeParts.get(snakeParts.size()-1));
             score++;
-            movesTillDead = worldWidth*worldHeight/2;
+            movesTillDead += worldWidth*worldHeight/2;
             generateFood();
         }
     }
@@ -96,34 +97,44 @@ public class Snake implements Simulation, Copyable<Snake> {
     }
 
     @Override
-    public Simulation newInstance()
+    public Snake newInstance()
     {
-        return null; // todo
-    }
-
-    @Override
-    public boolean update(GeneticNet net) {
-        double[] input = SnakeUtil.getVision(this);
-        double[] output = net.feedForward(input);
-
-        Direction dir = null;
-        double max = Double.MIN_VALUE;
-        for(int i = 0; i < output.length; i++) {
-            if(output[i] > max) {
-                max = output[i];
-                dir = Direction.values()[i];
-            }
-        }
-
-        setDirection(dir);
-        move();
-        return gameOver;
+        return new Snake(worldWidth, worldHeight);
     }
 
     @Override
     public double calculateFitness(GeneticNet net) {
+        while(!gameOver) {
+            double[] input = SnakeUtil.getVision(this, 1);
+            double[] output = net.feedForward(input);
+
+//            Direction dir = null;
+//            double max = Double.MIN_VALUE;
+//            for(int i = 0; i < output.length; i++) {
+//                if(output[i] > max && !Direction.values()[i].isOpposite(getDirection())) {
+//                    max = output[i];
+//                    dir = Direction.values()[i];
+//                }
+//            }
+
+            Direction dir = getDirection().getLeft();
+            double max = output[0];
+
+            if(output[1] > max) {
+                max = output[1];
+                dir = getDirection();
+            }else if(output[2] > max) {
+                max = output[2];
+                dir = getDirection().getRight();
+            }
+
+            setDirection(dir);
+            move();
+        }
+
         int applesEaten = foodLocs.size() - 1;
-        double fitness = Math.pow(2, applesEaten) + totalMoves;
+        double fitness = totalMoves + (Math.pow(2, applesEaten)+Math.pow(applesEaten, 2.1)*500)
+                         - (Math.pow(applesEaten, 2.1)*Math.pow(totalMoves*0.25, 1.3));
         return fitness;
     }
 

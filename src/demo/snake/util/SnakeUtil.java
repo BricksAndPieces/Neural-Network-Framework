@@ -21,7 +21,7 @@ public class SnakeUtil {
 
     private static int[][] directions = {{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1},{-1,0},{-1,1}};
 
-    public static double[] getVision(Snake snake) {
+    public static double[] getVision(Snake snake, boolean x) {
         double[] vision = new double[32]; // todo set num to correct num
         for(int i = 0; i < directions.length; i++) {
             Point p = new Point(snake.getHeadLocation());
@@ -33,17 +33,17 @@ public class SnakeUtil {
                 // Food distance
                 if(snake.getFoodLocation().equals(p))
                     //vision[i*directions.length+0] = 1 / snake.getHeadLocation().distance(p); // distance
-                    vision[i*directions.length+0] = 1; // binary
+                    vision[i*3+0] = 1; // binary
 
                 // Body distance
                 if(!hitBody && snake.getBodyLocations().contains(p)) {
-                    vision[i * directions.length + 1] = 1 / snake.getHeadLocation().distance(p);
+                    vision[i * 3 + 1] = 1 / snake.getHeadLocation().distance(p);
                     hitBody = true;
                 }
             }
 
             // Wall distance
-            vision[i*directions.length+2] = 1 / snake.getHeadLocation().distance(p);
+            vision[i*3+2] = 1 / (snake.getHeadLocation().distance(p)+1);
         }
 
         // Head direction
@@ -76,5 +76,65 @@ public class SnakeUtil {
         }
 
         return vision;
+    }
+
+    public static double[] getVision(Snake snake) {
+        double[] input = new double[8];
+        if(snake.getFoodLocation().x > snake.getHeadLocation().x) input[0] = 1;
+        if(snake.getFoodLocation().x < snake.getHeadLocation().x) input[1] = 1;
+        if(snake.getFoodLocation().y > snake.getHeadLocation().y) input[2] = 1;
+        if(snake.getFoodLocation().y < snake.getHeadLocation().y) input[3] = 1;
+
+        int i = 4;
+        for(Direction d : Direction.values()) {
+            Point p = new Point(snake.getHeadLocation().x+d.getX(), snake.getHeadLocation().y+d.getY());
+            if(!snake.pointWithinWorld(p)) input[i] = 1;
+            else if(snake.getBodyLocations().contains(p)) input[i] = 1;
+            i++;
+        }
+
+        return input;
+    }
+
+    public static double[] getVision(Snake snake, int i) {
+        double[] input = new double[7];
+
+        // Direction of apple
+        // todo change from world space to first person
+        if(snake.getDirection() == Direction.DOWN) {
+            if(snake.getFoodLocation().x > snake.getHeadLocation().x) input[0] = 1;
+            if(snake.getFoodLocation().x < snake.getHeadLocation().x) input[1] = 1;
+            if(snake.getFoodLocation().y > snake.getHeadLocation().y) input[2] = 1;
+            if(snake.getFoodLocation().y < snake.getHeadLocation().y) input[3] = 1;
+        }else if(snake.getDirection() == Direction.UP) {
+            if(snake.getFoodLocation().x < snake.getHeadLocation().x) input[0] = 1;
+            if(snake.getFoodLocation().x > snake.getHeadLocation().x) input[1] = 1;
+            if(snake.getFoodLocation().y < snake.getHeadLocation().y) input[2] = 1;
+            if(snake.getFoodLocation().y > snake.getHeadLocation().y) input[3] = 1;
+        }else if(snake.getDirection() == Direction.LEFT) {
+            if(snake.getFoodLocation().y > snake.getHeadLocation().y) input[0] = 1;
+            if(snake.getFoodLocation().y < snake.getHeadLocation().y) input[1] = 1;
+            if(snake.getFoodLocation().x > snake.getHeadLocation().x) input[2] = 1;
+            if(snake.getFoodLocation().x < snake.getHeadLocation().x) input[3] = 1;
+        }else if(snake.getDirection() == Direction.RIGHT) {
+            if(snake.getFoodLocation().y < snake.getHeadLocation().y) input[0] = 1;
+            if(snake.getFoodLocation().y > snake.getHeadLocation().y) input[1] = 1;
+            if(snake.getFoodLocation().x < snake.getHeadLocation().x) input[2] = 1;
+            if(snake.getFoodLocation().x > snake.getHeadLocation().x) input[3] = 1;
+        }
+
+        Point p = new Point(snake.getHeadLocation().x + snake.getDirection().getLeft().getX(),
+                      snake.getHeadLocation().y + snake.getDirection().getLeft().getY());
+        if(snake.pointWithinWorld(p) || snake.getBodyLocations().contains(p)) input[4] = 1;
+
+        p = new Point(snake.getHeadLocation().x + snake.getDirection().getX(),
+                            snake.getHeadLocation().y + snake.getDirection().getY());
+        if(snake.pointWithinWorld(p) || snake.getBodyLocations().contains(p)) input[5] = 1;
+
+        p = new Point(snake.getHeadLocation().x + snake.getDirection().getRight().getX(),
+                            snake.getHeadLocation().y + snake.getDirection().getRight().getY());
+        if(snake.pointWithinWorld(p) || snake.getBodyLocations().contains(p)) input[6] = 1;
+
+        return input;
     }
 }

@@ -71,7 +71,7 @@ public class Population<T extends Simulation<T>> {
         networks.sort(Collections.reverseOrder());
     }
 
-    public GeneticNet getBestPlayer() {
+    public GeneticNet<T> getBestPlayer() {
         return networks.get(0);
     }
 

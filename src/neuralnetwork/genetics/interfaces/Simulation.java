@@ -6,5 +6,5 @@ public interface Simulation<T extends Simulation<T>> {
 
     T newInstance();
 
-    double simulate(GeneticNet net);
+    double calculateFitness(GeneticNet net);
 }

@@ -21,7 +21,6 @@ public class XOR implements Simulation<XOR>  {
         while(true) {
             if(pop.getGeneration() % 1000 == 0)
             System.out.print("Generation " + pop.getGeneration() + " | ");
-            if(!pop.isGenerationCompleted())
             pop.simulateGeneration();
             if(pop.getGeneration() % 1000 == 0)
             System.out.println("Best Fitness: " + pop.getBestFitness());
@@ -72,10 +71,5 @@ public class XOR implements Simulation<XOR>  {
         }
 
         return fitness;
-    }
-
-    @Override
-    public boolean update(GeneticNet net) {
-        return true;
     }
 }
