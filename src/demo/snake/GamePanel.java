@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 @SuppressWarnings("All")
 public class GamePanel extends JPanel implements ActionListener {
@@ -37,7 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
         //int[] layers = {32, 20, 12, 4};
         //int[] layers = {8, 6, 4};
-        int[] layers = {7, 6, 4};
+        int[] layers = {7, 5, 3};
         Function activation = Function.SIGMOID;
         NeuralNetSettings settings = new NeuralNetSettings(layers, activation);
         snake = new Snake(10,10);
@@ -116,21 +115,21 @@ public class GamePanel extends JPanel implements ActionListener {
         frame.setVisible(true);
     }
 
+    boolean text = false;
+
     @Override
     protected void paintComponent(Graphics graphics)  {
         super.paintComponent(graphics);
         Graphics2D g = (Graphics2D)graphics;
         g.addRenderingHints(rendering);
 
-        if(maxScore != 0)
-            drawScores(g, snake.getScore());
-
         drawUnit(g, Color.red, snake.getFoodLocation());
         drawUnit(g, Color.white, snake.getHeadLocation());
         for(Point p : snake.getBodyLocations())
             drawUnit(g, Color.lightGray, p);
 
-        //drawSight(g, snake.getHeadLocation());
+        if(text) drawText(g, snake.getScore());
+        else text = true;
     }
 
     private void drawUnit(Graphics g, Color c, Point p) {
@@ -141,29 +140,13 @@ public class GamePanel extends JPanel implements ActionListener {
         g.fillRect(p.x * width, p.y * height, (int)(width * 0.99), (int)(height * 0.99));
     }
 
-    private void drawScores(Graphics g, int score) {
+    private void drawText(Graphics g, int score) {
         g.setColor(Color.white);
         g.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g.drawString("High Score: " + maxScore, 0, 20);
-        g.drawString("Score: " + score, 0, 50);
-    }
+        g.drawString("Generation: " + population.getGeneration(), 0, 20);
+        g.drawString("High Score: " + maxScore, 0, 50);
+        g.drawString("Score: " + score, 0, 80);
 
-//    private void drawSight(Graphics g, Point p) {
-//        int width = (int)(((double)getWidth()) / snake.getWorldWidth());
-//        int height = (int)((double)getHeight() / snake.getWorldHeight());
-//        int x = width * p.x + width/2;
-//        int y = height * p.y + height/2;
-//
-//        int length = 750;
-//
-//        g.setColor(Color.white);
-//        g.drawLine(x,y,x+length,y);
-//        g.drawLine(x,y,x+length,y+length);
-//        g.drawLine(x,y,x,y+length);
-//        g.drawLine(x,y,x-length,y+length);
-//        g.drawLine(x,y,x-length,y);
-//        g.drawLine(x,y,x-length,y-length);
-//        g.drawLine(x,y,x,y-length);
-//        g.drawLine(x,y,x+length,y-length);
-//    }
+        g.drawString("'Billy the snake'", 300, 20);
+    }
 }
