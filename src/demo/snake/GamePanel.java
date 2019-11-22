@@ -68,7 +68,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        double[] input = SnakeUtil.getVision(snake, 1);
+        double[] input = SnakeUtil.getVision(snake);
         double[] output = brain.feedForward(input);
 
 //        Direction dir = null;

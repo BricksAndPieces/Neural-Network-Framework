@@ -8,7 +8,6 @@ import neuralnetwork.util.Copyable;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -105,7 +104,7 @@ public class Snake implements Simulation<Snake>, Copyable<Snake> {
     @Override
     public double calculateFitness(GeneticNet net) {
         while(!gameOver) {
-            double[] input = SnakeUtil.getVision(this, 1);
+            double[] input = SnakeUtil.getVision(this);
             double[] output = net.feedForward(input);
 
 //            Direction dir = null;
