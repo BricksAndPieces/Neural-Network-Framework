@@ -37,11 +37,11 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // TODO FIGURE OUT WHY THE SIMULATION JUST STOPS
 
-        int[] layers = {10, 8, 5, 3};
+        int[] layers = {10, 7, 3};
         Function activation = Function.RELU; // very cool
         NeuralNetSettings settings = new NeuralNetSettings(layers, activation);
         snake = new Snake(5,5);
-        population = new Population<>(100, snake, settings);
+        population = new Population<>(500, snake, settings);
     }
 
     public void startAI() {

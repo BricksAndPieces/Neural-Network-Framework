@@ -31,11 +31,11 @@ public class Population<T extends Simulation<T>> {
 
     public void simulateGeneration() {
         networks.forEach(GeneticNet::simulate);
+        sortGeneration();
     }
 
     public void evolveNextGeneration(double mutationChance) {
         List<GeneticNet<T>> children = new ArrayList<>();
-        sortGeneration();
 
         // Add best players from last generation
         for(int i = 0; i < networks.size()/2; i++)
