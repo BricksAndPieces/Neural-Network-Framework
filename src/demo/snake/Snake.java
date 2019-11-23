@@ -38,7 +38,7 @@ public class Snake implements Simulation<Snake>, Copyable<Snake> {
         this.direction = Direction.DOWN;
         this.nextDirection = Direction.DOWN;
         this.gameOver = false;
-        this.movesTillDead = width*height/4;
+        this.movesTillDead = width*height/2;
 
         this.snakeParts.add(new Point(width / 2, height / 2));
         generateFood();
@@ -104,7 +104,7 @@ public class Snake implements Simulation<Snake>, Copyable<Snake> {
     @Override
     public double calculateFitness(GeneticNet net) {
         while(!gameOver) {
-            double[] input = SnakeUtil.getVision(this);
+            double[] input = SnakeUtil.getVision(this); // todo remove int
             double[] output = net.feedForward(input);
 
             Direction dir = getDirection().getLeft();
@@ -113,7 +113,8 @@ public class Snake implements Simulation<Snake>, Copyable<Snake> {
             if(output[1] > max) {
                 max = output[1];
                 dir = getDirection();
-            }else if(output[2] > max) {
+            }
+            if(output[2] > max) {
                 max = output[2];
                 dir = getDirection().getRight();
             }

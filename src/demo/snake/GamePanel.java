@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 @SuppressWarnings("All")
 public class GamePanel extends JPanel implements ActionListener {
@@ -34,10 +35,12 @@ public class GamePanel extends JPanel implements ActionListener {
         setBackground(Color.black);
         setPreferredSize(new Dimension(width, height));
 
-        int[] layers = {7, 5, 3};
-        Function activation = Function.SIGMOID;
+        // TODO FIGURE OUT WHY THE SIMULATION JUST STOPS
+
+        int[] layers = {10, 8, 5, 3};
+        Function activation = Function.RELU; // very cool
         NeuralNetSettings settings = new NeuralNetSettings(layers, activation);
-        snake = new Snake(10,10);
+        snake = new Snake(5,5);
         population = new Population<>(100, snake, settings);
     }
 
@@ -66,8 +69,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        double[] input = SnakeUtil.getVision(snake);
+        double[] input = SnakeUtil.getVision(snake); // todo remove int
         double[] output = brain.feedForward(input);
+        //System.out.println(Arrays.toString(input) + "     |     " + Arrays.toString(output));
 
         Direction dir = snake.getDirection().getLeft();
         double max = output[0];
@@ -75,7 +79,8 @@ public class GamePanel extends JPanel implements ActionListener {
         if(output[1] > max) {
             max = output[1];
             dir = snake.getDirection();
-        }else if(output[2] > max) {
+        }
+        if(output[2] > max) {
             max = output[2];
             dir = snake.getDirection().getRight();
         }
