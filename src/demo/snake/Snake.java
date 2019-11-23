@@ -38,7 +38,7 @@ public class Snake implements Simulation<Snake>, Copyable<Snake> {
         this.direction = Direction.DOWN;
         this.nextDirection = Direction.DOWN;
         this.gameOver = false;
-        this.movesTillDead = width*height/2;
+        this.movesTillDead = width*height/4;
 
         this.snakeParts.add(new Point(width / 2, height / 2));
         generateFood();
@@ -106,15 +106,6 @@ public class Snake implements Simulation<Snake>, Copyable<Snake> {
         while(!gameOver) {
             double[] input = SnakeUtil.getVision(this);
             double[] output = net.feedForward(input);
-
-//            Direction dir = null;
-//            double max = Double.MIN_VALUE;
-//            for(int i = 0; i < output.length; i++) {
-//                if(output[i] > max && !Direction.values()[i].isOpposite(getDirection())) {
-//                    max = output[i];
-//                    dir = Direction.values()[i];
-//                }
-//            }
 
             Direction dir = getDirection().getLeft();
             double max = output[0];

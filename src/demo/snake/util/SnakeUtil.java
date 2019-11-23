@@ -46,4 +46,12 @@ public class SnakeUtil {
 
         return input;
     }
+
+    public static double[] getVision(Snake snake, int i) {
+        double[] input = new double[10];
+
+
+
+        return input;
+    }
 }

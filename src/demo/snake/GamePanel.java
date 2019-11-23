@@ -34,8 +34,6 @@ public class GamePanel extends JPanel implements ActionListener {
         setBackground(Color.black);
         setPreferredSize(new Dimension(width, height));
 
-        //int[] layers = {32, 20, 12, 4};
-        //int[] layers = {8, 6, 4};
         int[] layers = {7, 5, 3};
         Function activation = Function.SIGMOID;
         NeuralNetSettings settings = new NeuralNetSettings(layers, activation);
@@ -70,15 +68,6 @@ public class GamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         double[] input = SnakeUtil.getVision(snake);
         double[] output = brain.feedForward(input);
-
-//        Direction dir = null;
-//        double max = Double.MIN_VALUE;
-//        for(int i = 0; i < output.length; i++) {
-//            if(output[i] > max && !Direction.values()[i].isOpposite(snake.getDirection())) {
-//                max = output[i];
-//                dir = Direction.values()[i];
-//            }
-//        }
 
         Direction dir = snake.getDirection().getLeft();
         double max = output[0];
