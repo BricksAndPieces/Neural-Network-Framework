@@ -1,7 +1,12 @@
 package neuralnetwork.core;
 
+import java.io.Serializable;
+
 @SuppressWarnings("All")
-public class NeuralNetSettings {
+public class NeuralNetSettings implements Serializable
+{
+
+    private static final long serialVersionUID = 4L;
 
     private final int[] layers;
     private final Function actFunc;

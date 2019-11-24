@@ -7,12 +7,15 @@ import neuralnetwork.genetics.interfaces.Simulation;
 import neuralnetwork.util.Copyable;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("All")
-public class Snake implements Simulation<Snake>, Copyable<Snake> {
+public class Snake implements Simulation<Snake>, Copyable<Snake>, Serializable
+{
+    private static final long serialVersionUID = 6L;
 
     private final int worldWidth;
     private final int worldHeight;

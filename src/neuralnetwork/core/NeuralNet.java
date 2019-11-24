@@ -2,10 +2,13 @@ package neuralnetwork.core;
 
 import neuralnetwork.util.Copyable;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 @SuppressWarnings("All")
-public class NeuralNet implements Copyable<NeuralNet> {
+public class NeuralNet implements Copyable<NeuralNet>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     protected Matrix[] weights; // Multi dimensional - Each matrix contains all weights between two layers
     protected Matrix[] biases; // One dimensional - Each matrix contains a list of biases for each 'output' node

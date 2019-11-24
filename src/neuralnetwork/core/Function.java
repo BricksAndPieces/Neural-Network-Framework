@@ -1,7 +1,11 @@
 package neuralnetwork.core;
 
+import java.io.Serializable;
+
 @SuppressWarnings("All")
-public interface Function {
+public interface Function extends Serializable  {
+
+    static final long serialVersionUID = 3L;
 
     double calculate(double v);
 

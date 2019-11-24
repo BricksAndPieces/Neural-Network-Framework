@@ -3,6 +3,7 @@ package neuralnetwork.core;
 import neuralnetwork.util.Copyable;
 import neuralnetwork.util.DimensionException;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -20,7 +21,9 @@ import java.util.Random;
  */
 
 @SuppressWarnings("All")
-public class Matrix implements Copyable<Matrix> {
+public class Matrix implements Copyable<Matrix>, Serializable
+{
+    private static final long serialVersionUID = 2L;
 
     /**
      * Raw container for the double values stored in the Matrix object

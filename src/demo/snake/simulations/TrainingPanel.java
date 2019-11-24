@@ -1,20 +1,22 @@
-package demo.snake;
+package demo.snake.simulations;
 
+import demo.snake.Snake;
 import demo.snake.util.Direction;
 import demo.snake.util.SnakeUtil;
 import neuralnetwork.core.Function;
 import neuralnetwork.core.NeuralNet;
 import neuralnetwork.core.NeuralNetSettings;
 import neuralnetwork.genetics.Population;
+import neuralnetwork.util.NetworkStore;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.time.Instant;
 
 @SuppressWarnings("All")
-public class GamePanel extends JPanel implements ActionListener {
+public class TrainingPanel extends JPanel implements ActionListener {
 
     private static final int DELAY_BETWEEN_FRAMES = 100;
     private static final RenderingHints rendering =
@@ -27,7 +29,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     int maxScore = 0;
 
-    public GamePanel(int width, int height) {
+    public TrainingPanel(int width, int height) {
         this.timer = new Timer(DELAY_BETWEEN_FRAMES, this);
         this.snake = snake;
 
@@ -92,6 +94,12 @@ public class GamePanel extends JPanel implements ActionListener {
         if(snake.isGameOver()) {
             maxScore = Math.max(maxScore, snake.getScore());
             timer.stop();
+
+            int option = JOptionPane.showConfirmDialog (this, "Store this network for later?","Save Network", JOptionPane.YES_NO_OPTION);
+            if(option == JOptionPane.YES_OPTION) {
+                NetworkStore.writeNetworkToFile(brain, "networks/" + snake.getScore() + "_" + Math.random());
+            }
+
             showGame();
         }
     }

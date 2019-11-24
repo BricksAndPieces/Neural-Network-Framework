@@ -5,11 +5,15 @@ import neuralnetwork.core.NeuralNetSettings;
 import neuralnetwork.core.NeuralNet;
 import neuralnetwork.genetics.interfaces.Simulation;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
 
 @SuppressWarnings("All")
-public class GeneticNet<T extends Simulation<T>> extends NeuralNet implements Comparable<GeneticNet> {
+public class GeneticNet<T extends Simulation<T>> extends NeuralNet implements Comparable<GeneticNet>, Serializable
+{
+
+    private static final long serialVersionUID = 5L;
 
     private double fitness = 0;
     private boolean dead = false;
