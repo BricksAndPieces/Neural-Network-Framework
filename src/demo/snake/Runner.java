@@ -5,12 +5,17 @@ import demo.snake.simulations.TrainingPanel;
 
 public class Runner {
 
-    public static void main(String[] args) {
-//        TrainingPanel training = new TrainingPanel(600, 600);
-//        training.display();
-//        training.startAI();
+    // CHANGE THIS TO CHANGE NN MODE
+    private static final boolean train = true;
 
-        LoadedPanel loaded = new LoadedPanel(600, 600, "networks/GoodNetwork3");
-        loaded.display();
+    public static void main(String[] args) {
+        if(train) {
+            TrainingPanel training = new TrainingPanel(600, 600);
+            training.display();
+            training.startAI();
+        }else {
+            LoadedPanel loaded = new LoadedPanel(600, 600, "networks/GoodNetwork2");
+            loaded.display();
+        }
     }
 }

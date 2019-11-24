@@ -60,39 +60,4 @@ public class SnakeUtil {
 
         return input;
     }
-
-    public static double[] getVision(Snake snake, int z) {
-        double[] input = new double[16];
-
-        for(int i = 0; i < Direction.values().length; i++) {
-            Direction d = Direction.values()[i];
-            Point p = new Point(snake.getHeadLocation());
-            boolean hitBody = false;
-
-            p.translate(d.getX(), d.getY());
-            while(snake.pointWithinWorld(p)) {
-                if(snake.getFoodLocation().equals(p))
-                    input[i*3+0] = snake.getHeadLocation().distance(p) / snake.getWorldWidth();
-
-                if(snake.getBodyLocations().contains(p) && !hitBody) {
-                    input[i*3+1] = snake.getHeadLocation().distance(p) / snake.getWorldWidth();
-                    hitBody = true;
-
-                }
-
-                p.translate(d.getX(), d.getY());
-            }
-
-            input[i*3+2] = snake.getHeadLocation().distance(p) / snake.getWorldWidth();
-        }
-
-        switch(snake.getDirection()) {
-            case UP: input[12] = 1; break;
-            case DOWN: input[13] = 1; break;
-            case LEFT: input[14] = 1; break;
-            case RIGHT: input[15] = 1; break;
-        }
-
-        return input;
-    }
 }
