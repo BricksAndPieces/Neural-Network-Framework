@@ -8,7 +8,7 @@ import java.util.*;
 public class Population<T extends Simulation<T>> {
 
     private final int popSize;
-    private int generation = 1;
+    private int generation = 0;
 
     private final NeuralNetSettings settings;
     private List<GeneticNet<T>> networks = new ArrayList<>();
