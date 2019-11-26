@@ -6,6 +6,7 @@ import demo.snake.util.SnakeUtil;
 import neuralnetwork.core.Function;
 import neuralnetwork.core.NeuralNet;
 import neuralnetwork.core.NeuralNetSettings;
+import neuralnetwork.genetics.GeneticNet;
 import neuralnetwork.genetics.Population;
 import neuralnetwork.util.NetworkStore;
 
@@ -18,7 +19,7 @@ import java.time.Instant;
 @SuppressWarnings("All")
 public class LoadedPanel extends JPanel implements ActionListener {
 
-    private static final int DELAY_BETWEEN_FRAMES = 100;
+    private static final int DELAY_BETWEEN_FRAMES = 25;
     private static final RenderingHints rendering =
             new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);;
 
@@ -30,7 +31,6 @@ public class LoadedPanel extends JPanel implements ActionListener {
 
     public LoadedPanel(int width, int height, String fileName) {
         this.timer = new Timer(DELAY_BETWEEN_FRAMES, this);
-        this.snake = snake;
 
         setFocusable(true);
         setBackground(Color.black);
@@ -38,13 +38,13 @@ public class LoadedPanel extends JPanel implements ActionListener {
 
         // TODO FIGURE OUT WHY THE SIMULATION JUST STOPS
 
-        snake = new Snake(10, 10);
         brain = NetworkStore.getNeuralNetFromFile(fileName);
+        snake = new Snake(20, 20);
         timer.start();
     }
 
     void delayBetweenRestart() {
-        try { Thread.sleep(3000); } catch(Exception e) { }
+        try { Thread.sleep(6000); } catch(Exception e) { }
         snake = new Snake(snake.getWorldWidth(), snake.getWorldHeight());
         timer.start();
     }
@@ -100,9 +100,10 @@ public class LoadedPanel extends JPanel implements ActionListener {
         g.addRenderingHints(rendering);
 
         drawUnit(g, Color.red, snake.getFoodLocation());
-        drawUnit(g, Color.white, snake.getHeadLocation());
-        for(Point p : snake.getBodyLocations())
-            drawUnit(g, Color.lightGray, p);
+        drawUnit(g, Color.green, snake.getHeadLocation());
+        for(int i = 0; i < snake.getBodyLocations().size(); i++) {
+            drawUnit(g, colorBetween(Color.green,Color.lightGray, ((double)i)/snake.getBodyLocations().size()), snake.getBodyLocations().get(i));
+        }
 
         if(text) drawText(g, snake.getScore());
         else text = true;
@@ -123,5 +124,12 @@ public class LoadedPanel extends JPanel implements ActionListener {
         g.drawString("Score: " + score, 0, 50);
 
         g.drawString("'Billy the snake (Supreme edition)'", 300, 20);
+    }
+
+    private Color colorBetween(Color c1, Color c2, double loc) {
+        int r = (int) (Math.min(c1.getRed(), c2.getRed()) + loc * Math.abs(c1.getRed() - c2.getRed()));
+        int g = (int) (Math.min(c1.getGreen(), c2.getGreen()) + loc * Math.abs(c1.getGreen() - c2.getGreen()));
+        int b = (int) (Math.min(c1.getBlue(), c2.getBlue()) + loc * Math.abs(c1.getBlue() - c2.getBlue()));
+        return new Color(r,g,b);
     }
 }

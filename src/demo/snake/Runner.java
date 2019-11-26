@@ -5,6 +5,8 @@ import demo.snake.simulations.TrainingPanel;
 
 public class Runner {
 
+    // todo test collected networks
+
     // CHANGE THIS TO CHANGE NN MODE
     private static final boolean train = true;
 
@@ -14,7 +16,7 @@ public class Runner {
             training.display();
             training.startAI();
         }else {
-            LoadedPanel loaded = new LoadedPanel(600, 600, "networks/GoodNetwork2");
+            LoadedPanel loaded = new LoadedPanel(600, 600, "networks/PerfectSnake");
             loaded.display();
         }
     }

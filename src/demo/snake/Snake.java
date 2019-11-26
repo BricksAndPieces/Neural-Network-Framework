@@ -59,7 +59,7 @@ public class Snake implements Simulation<Snake>, Copyable<Snake>, Serializable
         if(!pointWithinWorld(futureHead))
             gameOver = true; // Collided with wall
 
-        if(snakeParts.stream().filter(tail -> tail.equals(futureHead)).count() > 0)
+        if(snakeParts.stream().filter(tail -> tail.equals(futureHead)).count() > 0 && !futureHead.equals(snakeParts.get(snakeParts.size()-1)))
             gameOver = true; // Collided with tail
 
         snakeParts.add(0, futureHead);
@@ -81,8 +81,10 @@ public class Snake implements Simulation<Snake>, Copyable<Snake>, Serializable
             return;
         }
 
+        int i = worldWidth * worldHeight * 2;
         boolean validLoc = false;
         while(!validLoc) {
+            i--;
             int locIndex = rng.nextInt(worldWidth * worldHeight);
             Point attempt = new Point(locIndex % worldWidth, locIndex / worldHeight);
 
@@ -91,7 +93,24 @@ public class Snake implements Simulation<Snake>, Copyable<Snake>, Serializable
                 food = attempt;
                 foodLocs.add(food);
             }
+
+            if(i < 0) {
+                gameOver = snakeWon();
+                return;
+            }
         }
+    }
+
+    private boolean snakeWon() {
+        boolean snakeWon = true;
+        for(int w = 0; w < worldWidth; w++) {
+            for(int h = 0; h < worldHeight; h++) {
+                if(!snakeParts.contains(new Point(w,h)))
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean pointWithinWorld(Point p) {

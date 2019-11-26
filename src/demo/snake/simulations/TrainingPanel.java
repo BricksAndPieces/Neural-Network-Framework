@@ -18,7 +18,7 @@ import java.time.Instant;
 @SuppressWarnings("All")
 public class TrainingPanel extends JPanel implements ActionListener {
 
-    private static final int DELAY_BETWEEN_FRAMES = 100;
+    private static final int DELAY_BETWEEN_FRAMES = 50;
     private static final RenderingHints rendering =
             new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);;
 
@@ -39,10 +39,16 @@ public class TrainingPanel extends JPanel implements ActionListener {
 
         // TODO FIGURE OUT WHY THE SIMULATION JUST STOPS
 
-        int[] layers = {10, 7, 3};
+        //int[] layers = {15, 10, 6, 3};
+        //int[] layers = {10, 7, 6, 3};
+        //int[] layers = {10, 7, 3};
+        //int[] layers = {10, 3};
+        //int[] layers = {14, 7, 3};
+        //int[] layers = {12, 3};
+        int[] layers = {14, 3};
         Function activation = Function.RELU; // very cool
         NeuralNetSettings settings = new NeuralNetSettings(layers, activation);
-        snake = new Snake(5,5);
+        snake = new Snake(10,10);
         population = new Population<>(500, snake, settings);
     }
 
@@ -55,8 +61,9 @@ public class TrainingPanel extends JPanel implements ActionListener {
     private void showGame() {
         population.simulateGeneration();
 
-        for(int i = 0; i < 50; i++) {
-            population.evolveNextGeneration(0.05); // ez to skip some gens
+        for(int i = 0; i < 49; i++) { // ez to skip some gens
+            maxScore = Math.max(maxScore, population.getBestPlayer().getSimulation().getScore());
+            population.evolveNextGeneration(0.05);
             population.simulateGeneration();
         }
 
@@ -95,21 +102,22 @@ public class TrainingPanel extends JPanel implements ActionListener {
             maxScore = Math.max(maxScore, snake.getScore());
             timer.stop();
 
-            int option = JOptionPane.showConfirmDialog (this, "Store this network for later?","Save Network", JOptionPane.YES_NO_OPTION);
-            if(option == JOptionPane.YES_OPTION) {
-                NetworkStore.writeNetworkToFile(brain, "networks/" + snake.getScore() + "_" + Math.random());
-            }
-
             showGame();
         }
     }
 
     public void display() {
         JFrame frame = new JFrame("Snake");
+        frame.setBackground(Color.black);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setUndecorated(true);
-
         frame.add(this, BorderLayout.CENTER);
+
+        JButton button = new JButton("Save Network");
+        frame.add(button, BorderLayout.SOUTH);
+        button.addActionListener((e) -> {
+            NetworkStore.writeNetworkToFile(brain, "networks/" + population.getGeneration() +"-"+ brain);
+        });
+
         frame.setResizable(false);
         frame.pack();
 
