@@ -373,6 +373,20 @@ public class Matrix implements Copyable<Matrix>, Serializable
         return data[0].length;
     }
 
+    // todo code commenting
+    public double[] getRow(int i) {
+        return data[i];
+    }
+
+    // todo commenting
+    public double[] getCol(int i) {
+        double[] col = new double[rows()];
+        for(int r = 0; r < col.length; r++)
+            col[r] = data[r][i];
+
+        return col;
+    }
+
     /**
      * @return
      * The raw 2 dimensional array storing all the values
