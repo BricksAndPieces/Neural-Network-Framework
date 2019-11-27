@@ -11,7 +11,7 @@ import java.awt.*;
 public class NetworkView extends JPanel {
 
     private static final RenderingHints rendering =
-            new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);;
+            new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     private NeuralNet network = null;
     private double[] inputs = null;
