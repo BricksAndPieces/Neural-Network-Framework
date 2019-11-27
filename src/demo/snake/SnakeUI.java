@@ -70,6 +70,9 @@ public class SnakeUI implements ActionListener {
         statsView.setGeneration(population.getGeneration());
         statsView.setMaxScore(maxScore);
 
+        // todo put this elsewhere?
+        statsView.addGraphPoint(population.getGeneration(), ((GeneticNet<Snake>) network).getSimulation().getScore());
+
         // todo remove - this is temporary
         System.out.print("Gen: " + population.getGeneration());
         System.out.println(" | Fitness: " + population.getBestFitness());
@@ -104,7 +107,6 @@ public class SnakeUI implements ActionListener {
         gameView.repaint();
         networkView.repaint();
         inputView.repaint();
-        statsView.repaint();
 
         if(snake.isGameOver()) {
             maxScore = Math.max(maxScore, snake.getScore());
@@ -140,12 +142,13 @@ public class SnakeUI implements ActionListener {
         c.weightx = .1;
         c.weighty = .1;
         c.insets = new Insets(1,1,1,1);
-        c.fill = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.NONE;
         panel.add(networkView, c);
 
         c.gridx = 0;
         c.gridy = 1;
-        c.gridheight = 2;c.fill = GridBagConstraints.VERTICAL;
+        c.gridheight = 2;
+        c.fill = GridBagConstraints.NONE;
         panel.add(inputView, c);
 
         c.gridx = 1;
@@ -159,7 +162,7 @@ public class SnakeUI implements ActionListener {
         c.gridy = 0;
         c.gridwidth = 1;
         c.gridheight = 1;
-        c.fill = GridBagConstraints.BOTH;
+        //c.fill = GridBagConstraints.BOTH;
         panel.add(statsView, c);
 
         c.gridy = 1;
