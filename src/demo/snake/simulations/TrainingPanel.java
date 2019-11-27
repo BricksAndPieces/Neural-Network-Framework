@@ -1,19 +1,19 @@
 package demo.snake.simulations;
 
 import demo.snake.Snake;
+import demo.snake.wackdonottouch.panels.BetaInputView;
+import demo.snake.wackdonottouch.panels.BetaNetworkView;
 import demo.snake.util.Direction;
 import demo.snake.util.SnakeUtil;
 import neuralnetwork.core.Function;
 import neuralnetwork.core.NeuralNet;
 import neuralnetwork.core.NeuralNetSettings;
 import neuralnetwork.genetics.Population;
-import neuralnetwork.util.NetworkStore;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Instant;
 
 @SuppressWarnings("All")
 public class TrainingPanel extends JPanel implements ActionListener {
@@ -45,11 +45,11 @@ public class TrainingPanel extends JPanel implements ActionListener {
         //int[] layers = {10, 3};
         //int[] layers = {14, 7, 3};
         //int[] layers = {12, 3};
-        int[] layers = {14, 3};
+        int[] layers = {14, 7, 3};
         Function activation = Function.RELU; // very cool
         NeuralNetSettings settings = new NeuralNetSettings(layers, activation);
         snake = new Snake(10,10);
-        population = new Population<>(500, snake, settings);
+        population = new Population<>(100, snake, settings);
     }
 
     public void startAI() {
@@ -72,6 +72,7 @@ public class TrainingPanel extends JPanel implements ActionListener {
         System.out.print("Gen: " + population.getGeneration());
         System.out.println(" | Fitness: " + population.getBestFitness());
 
+        networkView.setNetwork(brain);
         timer.start();
         population.evolveNextGeneration(0.05);
     }
@@ -96,6 +97,14 @@ public class TrainingPanel extends JPanel implements ActionListener {
 
         snake.setDirection(dir);
         snake.move();
+
+        networkView.setInputs(input);
+        networkView.setOutputs(output);
+        inputView.setInputs(input);
+
+//        networkView.repaint();
+//        inputView.repaint();
+        container.repaint();
         repaint();
 
         if(snake.isGameOver()) {
@@ -106,26 +115,38 @@ public class TrainingPanel extends JPanel implements ActionListener {
         }
     }
 
+    BetaNetworkView networkView = new BetaNetworkView();
+    BetaInputView inputView = new BetaInputView();
+    JPanel container = new JPanel();
+
     public void display() {
         JFrame frame = new JFrame("Snake");
         frame.setBackground(Color.black);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        container.setPreferredSize(new Dimension(200, 600));
+        container.setBackground(Color.black);
+        container.add(networkView, BorderLayout.CENTER);
+        container.add(inputView, BorderLayout.AFTER_LINE_ENDS);
+        container.add(new JButton("Save Network"), BorderLayout.SOUTH);
+        container.add(new JButton("Load Network"), BorderLayout.SOUTH); // todo figure this part out later
+
         frame.add(this, BorderLayout.CENTER);
+        frame.add(container, BorderLayout.WEST);
 
-        JButton button = new JButton("Save Network");
-        frame.add(button, BorderLayout.SOUTH);
-        button.addActionListener((e) -> {
-            NetworkStore.writeNetworkToFile(brain, "networks/" + population.getGeneration() +"-"+ brain);
-        });
+//        JButton button = new JButton("Save Network");
+//        frame.add(button, BorderLayout.SOUTH);
+//        button.addActionListener((e) -> {
+//            NetworkStore.writeNetworkToFile(brain, "networks/" + population.getGeneration() +"-"+ brain);
+//        });
 
-        frame.setResizable(false);
         frame.pack();
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    boolean text = false;
+    boolean firstPaint = true;
 
     @Override
     protected void paintComponent(Graphics graphics)  {
@@ -134,12 +155,22 @@ public class TrainingPanel extends JPanel implements ActionListener {
         g.addRenderingHints(rendering);
 
         drawUnit(g, Color.red, snake.getFoodLocation());
-        drawUnit(g, Color.white, snake.getHeadLocation());
-        for(Point p : snake.getBodyLocations())
-            drawUnit(g, Color.lightGray, p);
+        drawUnit(g, Color.green, snake.getHeadLocation());
+        for(int i = 0; i < snake.getBodyLocations().size(); i++) {
+            drawUnit(g, colorBetween(Color.green,Color.lightGray, ((double)i)/snake.getBodyLocations().size()), snake.getBodyLocations().get(i));
+        }
 
-        if(text) drawText(g, snake.getScore());
-        else text = true;
+        if(firstPaint) firstPaint = false;
+        else {
+//            double[] input = SnakeUtil.getVision(snake); // todo remove int
+//            double[] output = brain.feedForward(input);
+//            NetworkGraphics.draw(g, brain, input, output, 0, 100, 200, 200);
+
+            drawText(g, snake.getScore());
+        }
+
+        g.setColor(Color.white);
+        g.drawRect(0, 0, (int) (getWidth()*0.9999), (int) (getHeight()));
     }
 
     private void drawUnit(Graphics g, Color c, Point p) {
@@ -153,10 +184,17 @@ public class TrainingPanel extends JPanel implements ActionListener {
     private void drawText(Graphics g, int score) {
         g.setColor(Color.white);
         g.setFont(new Font("TimesRoman", Font.BOLD, 20));
-        g.drawString("Generation: " + population.getGeneration(), 0, 20);
-        g.drawString("High Score: " + maxScore, 0, 50);
-        g.drawString("Score: " + score, 0, 80);
+        g.drawString("Generation: " + population.getGeneration(), 2, 20);
+        g.drawString("High Score: " + maxScore, 2, 50);
+        g.drawString("Score: " + score, 2, 80);
 
         g.drawString("'Billy the snake'", 300, 20);
+    }
+
+    private Color colorBetween(Color c1, Color c2, double loc) {
+        int r = (int) (Math.min(c1.getRed(), c2.getRed()) + loc * Math.abs(c1.getRed() - c2.getRed()));
+        int g = (int) (Math.min(c1.getGreen(), c2.getGreen()) + loc * Math.abs(c1.getGreen() - c2.getGreen()));
+        int b = (int) (Math.min(c1.getBlue(), c2.getBlue()) + loc * Math.abs(c1.getBlue() - c2.getBlue()));
+        return new Color(r,g,b);
     }
 }

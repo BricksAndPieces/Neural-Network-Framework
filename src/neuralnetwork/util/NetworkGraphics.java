@@ -10,8 +10,8 @@ public class NetworkGraphics {
 
     public static void draw(Graphics g, NeuralNet net, double[] inputs, double[] outputs, int x, int y, int w, int h) {
         // Draw frame for the Neural Net Drawing
-        g.setColor(Color.white);
-        g.drawRect(x,y,w,h);
+//        g.setColor(Color.white);
+//        g.drawRect(x,y,w,h);
 
         // Set locations for nodes to be placed
         int nodeSize = (int) (w / net.getLayers()[0] * 0.5);

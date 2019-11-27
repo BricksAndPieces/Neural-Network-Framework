@@ -1,9 +1,10 @@
-package demo.snake;
+package demo.snake.wackdonottouch.panels;
 
 import demo.snake.simulations.LoadedPanel;
 import demo.snake.simulations.TrainingPanel;
 
-public class Runner {
+public class betaRunner
+{
 
     // todo test collected networks
 
