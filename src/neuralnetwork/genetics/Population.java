@@ -29,6 +29,20 @@ public class Population<T extends Simulation<T>> {
         }
     }
 
+    public Population(int popSize, GeneticNet<T> parent) {
+        this.popSize = popSize;
+        this.settings = new NeuralNetSettings(parent.getLayers(), parent.getActFunc());
+        this.simulation = parent.getSimulation();
+
+        networks.add(parent);
+        parent.setSimulation(simulation.newInstance());
+        for(int i = 0; i < popSize-1; i++) {
+            GeneticNet<T> net = parent.mutate(1, rng);
+            net.setSimulation(simulation.newInstance());
+            networks.add(net);
+        }
+    }
+
     public void simulateGeneration() {
         networks.forEach(GeneticNet::simulate);
         sortGeneration();

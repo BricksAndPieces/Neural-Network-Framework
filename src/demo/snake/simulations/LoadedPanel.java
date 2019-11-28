@@ -3,18 +3,13 @@ package demo.snake.simulations;
 import demo.snake.Snake;
 import demo.snake.util.Direction;
 import demo.snake.util.SnakeUtil;
-import neuralnetwork.core.Function;
 import neuralnetwork.core.NeuralNet;
-import neuralnetwork.core.NeuralNetSettings;
-import neuralnetwork.genetics.GeneticNet;
-import neuralnetwork.genetics.Population;
 import neuralnetwork.util.NetworkStore;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Instant;
 
 @SuppressWarnings("All")
 public class LoadedPanel extends JPanel implements ActionListener {
@@ -38,7 +33,7 @@ public class LoadedPanel extends JPanel implements ActionListener {
 
         // TODO FIGURE OUT WHY THE SIMULATION JUST STOPS
 
-        brain = NetworkStore.getNeuralNetFromFile(fileName);
+        brain = NetworkStore.getNeuralNetFromFileOLd(fileName);
         snake = new Snake(20, 20);
         timer.start();
     }

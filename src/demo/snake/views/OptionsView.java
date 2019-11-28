@@ -4,6 +4,7 @@ import demo.snake.SnakeApp;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class OptionsView extends JPanel {
 
@@ -56,20 +57,15 @@ public class OptionsView extends JPanel {
         });
 
         // Buttons
-        JButton newNet = new JButton("New Network");
-        newNet.addActionListener(e -> {
-            // TODO do something
-        });
 
         JButton loadNet = new JButton("Load Network");
-        loadNet.addActionListener(e -> {
-            // TODO do something
-        });
+        loadNet.addActionListener(e -> app.loadNetwork());
 
         JButton saveNet = new JButton("Save Network");
-        saveNet.addActionListener(e -> {
-            // TODO do something
-        });
+        saveNet.addActionListener(e -> app.saveNetwork());
+
+        JButton quit = new JButton("Quit");
+        quit.addActionListener(e -> app.quit());
 
         // Filler
         JPanel filler = new JPanel();
@@ -84,9 +80,9 @@ public class OptionsView extends JPanel {
         add(mutationLabel);
         add(mutationSlider);
         add(filler);
-        add(newNet);
         add(loadNet);
         add(saveNet);
+        add(quit);
     }
 
     @Override
@@ -105,5 +101,12 @@ public class OptionsView extends JPanel {
         g.drawLine(22, 95, getWidth()-22, 95);
         g.setColor(Color.green);
         g.drawLine(22, 150, getWidth()-22, 150);
+    }
+
+    public void reset() {
+        JSlider[] sliders = Arrays.stream(getComponents()).filter(c -> c instanceof JSlider).toArray(JSlider[]::new);
+        sliders[0].setValue(1);
+        sliders[1].setValue(1);
+        sliders[2].setValue(5);
     }
 }
