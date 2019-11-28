@@ -40,6 +40,7 @@ public class StatsView extends JPanel {
         stats.add(new JLabel()); // empty to take up space
         add(stats);
 
+        graph.add(new Point(0, 0));
         graphPanel = new Graph();
         add(graphPanel);
     }
