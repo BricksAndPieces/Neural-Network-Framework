@@ -57,7 +57,7 @@ public class SnakeApp implements ActionListener {
     }
 
     private void nextGeneration() {
-        population.simulateGeneration(); // todo simulate population in background (then i can increase pop size)
+        population.simulateGeneration(); // todo simulate population in background (then i can increase pop size) TIME TO FIX THIS
 
         for(int i = 0; i < gensPerRound-1; i++) {
             maxScore = Math.max(maxScore, population.getBestPlayer().getSimulation().getScore());
@@ -168,12 +168,21 @@ public class SnakeApp implements ActionListener {
         panel.setBackground(Color.black);
         panel.setPreferredSize(new Dimension(1010, 630));
 
-        regularSize();
+        frame = new JFrame(WINDOW_TITLE);
+        frame.setBackground(Color.black);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setMinimumSize(panel.getPreferredSize());
+        frame.setSize(panel.getPreferredSize());
+
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setJMenuBar(setUpMenu(frame));
+
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
     private JMenuBar setUpMenu(JFrame frame) {
-        // TODO Figure this out for later (not a priority)
-
         JMenuBar bar = new JMenuBar();
 
         JMenuItem load = new JMenuItem("Load Network");
@@ -210,38 +219,19 @@ public class SnakeApp implements ActionListener {
     }
 
     private void regularSize() {
-        if(frame != null) frame.dispose();
-
-        frame = new JFrame(WINDOW_TITLE);
-        frame.setBackground(Color.black);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(panel.getPreferredSize());
-        frame.setSize(panel.getPreferredSize());
-
-        frame.add(panel, BorderLayout.CENTER);
-        frame.setJMenuBar(setUpMenu(frame));
-
-        frame.pack();
+        frame.dispose();
+        frame.setUndecorated(false);
+        panel.setSize(panel.getMinimumSize());
+        frame.setSize(panel.getMinimumSize());
+        frame.setExtendedState(JFrame.NORMAL);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
     private void fullscreen() {
-        if(frame != null) frame.dispose();
-
-        frame = new JFrame(WINDOW_TITLE);
-        frame.setBackground(Color.black);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(panel.getPreferredSize());
-
-        frame.add(panel, BorderLayout.CENTER);
-        frame.setJMenuBar(setUpMenu(frame));
-
+        frame.dispose();
         frame.setUndecorated(true);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        frame.pack();
-        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
