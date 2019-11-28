@@ -28,7 +28,7 @@ public class OptionsView extends JPanel {
         // Sliders
         JSlider speedSlider = new JSlider(1, 10);
         speedSlider.setValue(1);
-        speedSlider.setForeground(Color.white);
+        speedSlider.setSnapToTicks(true);
         speedSlider.addChangeListener(e -> {
             if(!speedSlider.getValueIsAdjusting()) {
                 int x = 11 - speedSlider.getValue();
@@ -36,22 +36,22 @@ public class OptionsView extends JPanel {
             }
         });
 
-        JSlider genSlider = new JSlider(1, 50);
+        JSlider genSlider = new JSlider(1, 5);
         genSlider.setValue(1);
-        genSlider.setForeground(Color.white);
+        genSlider.setSnapToTicks(true);
         genSlider.addChangeListener(e -> {
             if(!genSlider.getValueIsAdjusting()) {
-                // TODO do something
+                app.setGensPerRound(genSlider.getValue()*10);
             }
         });
 
-        JSlider mutationSlider = new JSlider(1, 100);
-        mutationSlider.setValue(1);
-        mutationSlider.setForeground(Color.white);
+        JSlider mutationSlider = new JSlider(1, 10);
+        mutationSlider.setValue(5);
+        mutationSlider.setSnapToTicks(true);
         mutationSlider.addChangeListener(e -> {
             if(!mutationSlider.getValueIsAdjusting()) {
                 double mutation = mutationSlider.getValue() / 100.0;
-                // TODO do something
+                app.setMutationRate(mutation);
             }
         });
 
