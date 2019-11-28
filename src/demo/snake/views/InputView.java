@@ -43,35 +43,23 @@ public class InputView extends JPanel {
 
         // Wall collisions
         g.setColor(inputs[4] == 0 ? Color.lightGray : Color.red);
-        drawSquare(g, size * 2, size * 6, size);
-
-        g.setColor(inputs[5] == 0 ? Color.lightGray : Color.red);
-        drawSquare(g, size * 2, size * 5, size);
-
-        g.setColor(inputs[6] == 0 ? Color.lightGray : Color.red);
-        drawSquare(g, size * 3, size * 5, size);
-
-        g.setColor(inputs[7] == 0 ? Color.lightGray : Color.red);
-        drawSquare(g, size * 4, size * 5, size);
-
-        g.setColor(inputs[8] == 0 ? Color.lightGray : Color.red);
         drawSquare(g, size * 4, size * 6, size);
 
+        g.setColor(inputs[5] == 0 ? Color.lightGray : Color.red);
+        drawSquare(g, size * 3, size * 5, size);
+
+        g.setColor(inputs[6] == 0 ? Color.lightGray : Color.red);
+        drawSquare(g, size * 2, size * 6, size);
+
         // Body collisions
-        g.setColor(inputs[9] == 0 ? Color.lightGray : Color.red);
-        drawSquare(g, size * 2, size * 9, size);
+        g.setColor(inputs[7] == 0 ? Color.lightGray : Color.red);
+        drawSquare(g, size * 4, size * 9, size);
 
-        g.setColor(inputs[10] == 0 ? Color.lightGray : Color.red);
-        drawSquare(g, size * 2, size * 8, size);
-
-        g.setColor(inputs[11] == 0 ? Color.lightGray : Color.red);
+        g.setColor(inputs[8] == 0 ? Color.lightGray : Color.red);
         drawSquare(g, size * 3, size * 8, size);
 
-        g.setColor(inputs[12] == 0 ? Color.lightGray : Color.red);
-        drawSquare(g, size * 4, size * 8, size);
-
-        g.setColor(inputs[13] == 0 ? Color.lightGray : Color.red);
-        drawSquare(g, size * 4, size * 9, size);
+        g.setColor(inputs[9] == 0 ? Color.lightGray : Color.red);
+        drawSquare(g, size * 2, size * 9, size);
     }
 
     public void setInputs(double[] inputs) {
