@@ -31,7 +31,9 @@ public class SnakeApp implements ActionListener {
     private int gensPerRound = 1;
     private Timer gameLoop;
 
-    private JFrame frame;
+    private JFrame frame = null;
+    private JPanel panel = null;
+
     private NetworkView networkView;
     private InputView inputView;
     private GameView gameView;
@@ -131,11 +133,7 @@ public class SnakeApp implements ActionListener {
 
         // ---------------------------------------------------------- //
 
-        frame = new JFrame("Snake");
-        frame.setBackground(Color.black);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel panel = new JPanel(new GridBagLayout());
+        panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
         c.gridx = 0;
@@ -169,14 +167,8 @@ public class SnakeApp implements ActionListener {
 
         panel.setBackground(Color.black);
         panel.setPreferredSize(new Dimension(1010, 630));
-        frame.setMinimumSize(panel.getPreferredSize());
 
-        frame.add(panel, BorderLayout.CENTER);
-        frame.setJMenuBar(setUpMenu(frame));
-
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        regularSize();
     }
 
     private JMenuBar setUpMenu(JFrame frame) {
@@ -195,20 +187,14 @@ public class SnakeApp implements ActionListener {
         file.add(save);
         bar.add(file);
 
-        JMenu edit = new JMenu("Edit");
-        edit.add("Game Speed (dropdown)");
-        edit.add("Generation speed (dropdown)");
-        edit.add("Mutation rate (dropdown)");
-        bar.add(edit);
-
         JMenuItem maximize = new JMenuItem("Full Screen");
         maximize.addActionListener(e -> {
-            frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+            fullscreen();
         });
 
         JMenuItem minimize = new JMenuItem("Exit Full Screen");
-        maximize.addActionListener(e -> {
-            frame.setExtendedState(frame.getExtendedState() | JFrame.NORMAL);
+        minimize.addActionListener(e -> {
+            regularSize();
         });
 
         JMenu view = new JMenu("View");
@@ -221,6 +207,42 @@ public class SnakeApp implements ActionListener {
 
     public void startSimulation() {
         nextGeneration();
+    }
+
+    private void regularSize() {
+        if(frame != null) frame.dispose();
+
+        frame = new JFrame(WINDOW_TITLE);
+        frame.setBackground(Color.black);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setMinimumSize(panel.getPreferredSize());
+        frame.setSize(panel.getPreferredSize());
+
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setJMenuBar(setUpMenu(frame));
+
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    private void fullscreen() {
+        if(frame != null) frame.dispose();
+
+        frame = new JFrame(WINDOW_TITLE);
+        frame.setBackground(Color.black);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setMinimumSize(panel.getPreferredSize());
+
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setJMenuBar(setUpMenu(frame));
+
+        frame.setUndecorated(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
     public void quit() {
