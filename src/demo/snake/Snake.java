@@ -67,8 +67,8 @@ public class Snake implements Simulation<Snake>, Copyable<Snake>, Serializable
 
         if(futureHead.equals(food)) {
             snakeParts.add(snakeParts.get(snakeParts.size()-1));
+            movesTillDead = Math.max(movesTillDead + worldWidth*worldHeight/2, worldWidth * worldHeight);
             score++;
-            movesTillDead += worldWidth*worldHeight/2;
             generateFood();
         }
     }

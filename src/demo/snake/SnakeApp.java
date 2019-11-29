@@ -83,6 +83,8 @@ public class SnakeApp implements ActionListener {
         population.evolveNextGeneration(mutationRate);
     }
 
+    boolean x = false;
+
     @Override
     public void actionPerformed(ActionEvent e) {
         double[] input = SnakeUtil.getVision(snake);
@@ -108,22 +110,29 @@ public class SnakeApp implements ActionListener {
         inputView.repaint();
 
         if(snake.isGameOver()) {
-            if(snake.getScore() == 99) {
-                System.out.println("99: " + snake.getFoodLocation());
-            }
-            if(snake.getScore()==100) {
-                System.out.println(snake.getFoodLocs().size());
-                System.out.println("100: " + snake.getFoodLocation());
-                System.out.println(snake.getSnakeParts().size());
-                System.out.println(new HashSet<Point>(snake.getSnakeParts()).size());
+            if(x)
+            {
+                if(snake.getScore() == 99)
+                {
+                    System.out.println("99: " + snake.getFoodLocation());
+                }
+                if(snake.getScore() == 100)
+                {
+                    System.out.println(snake.getFoodLocs().size());
+                    System.out.println("100: " + snake.getFoodLocation());
+                    System.out.println(snake.getSnakeParts().size());
+                    System.out.println(new HashSet<Point>(snake.getSnakeParts()).size());
+                }
+
+                maxScore = Math.max(maxScore, snake.getScore());
+                statsView.addGraphPoint(population.getGeneration(), snake.getScore());
+                statsView.setMaxScore(maxScore);
+                gameLoop.stop();
+
+                nextGeneration();
             }
 
-            maxScore = Math.max(maxScore, snake.getScore());
-            statsView.addGraphPoint(population.getGeneration(), snake.getScore());
-            statsView.setMaxScore(maxScore);
-            gameLoop.stop();
-
-            nextGeneration();
+            x = !x;
         }
     }
 
