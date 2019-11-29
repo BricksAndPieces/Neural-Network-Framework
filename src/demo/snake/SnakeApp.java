@@ -46,6 +46,7 @@ public class SnakeApp implements ActionListener {
     private Snake snake;
 
     private int maxScore = 0;
+    private boolean lastFrame = false; // Don't ask me why this works because i have no idea
 
     public SnakeApp() {
         gameLoop = setupGameloop();
@@ -83,8 +84,6 @@ public class SnakeApp implements ActionListener {
         population.evolveNextGeneration(mutationRate);
     }
 
-    boolean x = false;
-
     @Override
     public void actionPerformed(ActionEvent e) {
         double[] input = SnakeUtil.getVision(snake);
@@ -110,20 +109,7 @@ public class SnakeApp implements ActionListener {
         inputView.repaint();
 
         if(snake.isGameOver()) {
-            if(x)
-            {
-                if(snake.getScore() == 99)
-                {
-                    System.out.println("99: " + snake.getFoodLocation());
-                }
-                if(snake.getScore() == 100)
-                {
-                    System.out.println(snake.getFoodLocs().size());
-                    System.out.println("100: " + snake.getFoodLocation());
-                    System.out.println(snake.getSnakeParts().size());
-                    System.out.println(new HashSet<Point>(snake.getSnakeParts()).size());
-                }
-
+            if(lastFrame) {
                 maxScore = Math.max(maxScore, snake.getScore());
                 statsView.addGraphPoint(population.getGeneration(), snake.getScore());
                 statsView.setMaxScore(maxScore);
@@ -132,7 +118,7 @@ public class SnakeApp implements ActionListener {
                 nextGeneration();
             }
 
-            x = !x;
+            lastFrame = !lastFrame;
         }
     }
 
