@@ -19,11 +19,7 @@ public class GameView extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Population loading
-        if(snake == null) {
-            g.setFont(new Font("TimesRoman", Font.BOLD, 50)); // todo figure this out
-            g.drawString("Simulating population", 100, 100);
-        }else {
+        if(snake != null) {
             int size = getWidth() / snake.getWorldWidth();
 
             // Food
