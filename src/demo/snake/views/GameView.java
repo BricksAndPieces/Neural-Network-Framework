@@ -35,7 +35,7 @@ public class GameView extends JPanel {
             // Snake
             for(int i = 0; i < snake.getSnakeParts().size(); i++) {
                 Point p = snake.getSnakeParts().get(i);
-                g.setColor(ColorUtil.gradient(Color.GREEN, Color.WHITE, 1-((double)i) / (snake.getSnakeParts().size()*2)));
+                g.setColor(ColorUtil.gradient(Color.GREEN, Color.WHITE, 1-(i / (snake.getSnakeParts().size()*1.0))));
                 drawSquare(g, p.x, p.y, size);
             }
         }
