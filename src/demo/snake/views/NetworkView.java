@@ -1,6 +1,5 @@
 package demo.snake.views;
 
-import demo.snake.util.ColorUtil;
 import neuralnetwork.core.Matrix;
 import neuralnetwork.core.NeuralNet;
 
@@ -14,8 +13,6 @@ public class NetworkView extends JPanel {
             new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     private NeuralNet network = null;
-    private double[] inputs = null;
-    private double[] outputs = null;
 
     public NetworkView(int width, int height) {
         setPreferredSize(new Dimension(width, height));
@@ -26,7 +23,7 @@ public class NetworkView extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         ((Graphics2D)g).addRenderingHints(rendering);
-        if(network == null || inputs == null || outputs == null)
+        if(network == null)
             return; // todo figure out better solution
 
         // Set locations for nodes to be placed
@@ -60,14 +57,9 @@ public class NetworkView extends JPanel {
         }
 
         // Draw the nodes
+        g.setColor(Color.green);
         for(int i = 0; i < nodes.length; i++) {
             for(int j = 0; j < nodes[i].length; j++) {
-                // Set color of node depending on layer
-                if(i == 0) g.setColor(ColorUtil.gradient(Color.white, Color.green, inputs[j])); // Input layer
-                else if(i < nodes.length-1) ColorUtil.gradient(Color.white, Color.green, Math.random()); // Hidden layer
-                else g.setColor(ColorUtil.gradient(Color.white, Color.green, outputs[j])); // Output layer
-
-                // Draw node
                 Point nodeLoc = nodes[i][j];
                 g.fillOval(nodeLoc.x, nodeLoc.y, nodeSize, nodeSize);
             }
@@ -76,13 +68,5 @@ public class NetworkView extends JPanel {
 
     public void setNetwork(NeuralNet network) {
         this.network = network;
-    }
-
-    public void setInputs(double[] inputs) {
-        this.inputs = inputs;
-    }
-
-    public void setOutputs(double[] outputs) {
-        this.outputs = outputs;
     }
 }

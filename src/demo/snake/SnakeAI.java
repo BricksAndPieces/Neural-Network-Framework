@@ -2,7 +2,7 @@ package demo.snake;
 
 import javax.swing.*;
 
-public class Runner
+public class SnakeAI
 {
 
     public static void main(String[] args) throws Exception {

@@ -96,6 +96,7 @@ public class Snake implements Simulation<Snake>, Copyable<Snake>, Serializable
 
             if(i < 0) {
                 gameOver = snakeWon();
+                food = null;
                 return;
             }
         }
@@ -179,6 +180,10 @@ public class Snake implements Simulation<Snake>, Copyable<Snake>, Serializable
 
     public Point getHeadLocation() {
         return snakeParts.get(0);
+    }
+
+    public List<Point> getFoodLocs() {
+        return foodLocs;
     }
 
     public Point getFoodLocation() {

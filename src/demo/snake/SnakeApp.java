@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 
 @SuppressWarnings("All")
 public class SnakeApp implements ActionListener {
@@ -60,7 +61,6 @@ public class SnakeApp implements ActionListener {
         population.simulateGeneration(); // todo simulate population in background (then i can increase pop size) TIME TO FIX THIS
 
         for(int i = 0; i < gensPerRound-1; i++) {
-            maxScore = Math.max(maxScore, population.getBestPlayer().getSimulation().getScore());
             population.evolveNextGeneration(mutationRate);
             population.simulateGeneration();
         }
@@ -73,8 +73,7 @@ public class SnakeApp implements ActionListener {
         statsView.setGeneration(population.getGeneration());
         statsView.setMaxScore(maxScore);
 
-        // todo put this elsewhere?
-        statsView.addGraphPoint(population.getGeneration(), ((GeneticNet<Snake>) network).getSimulation().getScore());
+        networkView.repaint();
 
         // todo remove - this is temporary
         System.out.print("Gen: " + population.getGeneration());
@@ -102,17 +101,25 @@ public class SnakeApp implements ActionListener {
         snake.setDirection(dir);
         snake.move();
 
-        networkView.setInputs(input);
-        networkView.setOutputs(output);
         inputView.setInputs(input);
         statsView.setScore(snake.getScore());
 
         gameView.repaint();
-        networkView.repaint();
         inputView.repaint();
 
         if(snake.isGameOver()) {
+            if(snake.getScore() == 99) {
+                System.out.println("99: " + snake.getFoodLocation());
+            }
+            if(snake.getScore()==100) {
+                System.out.println(snake.getFoodLocs().size());
+                System.out.println("100: " + snake.getFoodLocation());
+                System.out.println(snake.getSnakeParts().size());
+                System.out.println(new HashSet<Point>(snake.getSnakeParts()).size());
+            }
+
             maxScore = Math.max(maxScore, snake.getScore());
+            statsView.addGraphPoint(population.getGeneration(), snake.getScore());
             statsView.setMaxScore(maxScore);
             gameLoop.stop();
 
@@ -264,6 +271,7 @@ public class SnakeApp implements ActionListener {
             timeBetweenFrames = 50;
             gensPerRound = 1;
             mutationRate = 0.05;
+            maxScore = 0;
             gameLoop = setupGameloop();
             startSimulation();
         }

@@ -37,7 +37,7 @@ public class Population<T extends Simulation<T>> {
         networks.add(parent);
         parent.setSimulation(simulation.newInstance());
         for(int i = 0; i < popSize-1; i++) {
-            GeneticNet<T> net = parent.mutate(1, rng);
+            GeneticNet<T> net = parent.copy();
             net.setSimulation(simulation.newInstance());
             networks.add(net);
         }

@@ -27,13 +27,15 @@ public class GameView extends JPanel {
             int size = getWidth() / snake.getWorldWidth();
 
             // Food
-            g.setColor(Color.red);
-            drawSquare(g, snake.getFoodLocation().x, snake.getFoodLocation().y, size);
+            if(snake.getFoodLocation() != null) {
+                g.setColor(Color.red);
+                drawSquare(g, snake.getFoodLocation().x, snake.getFoodLocation().y, size);
+            }
 
             // Snake
             for(int i = 0; i < snake.getSnakeParts().size(); i++) {
                 Point p = snake.getSnakeParts().get(i);
-                g.setColor(ColorUtil.gradient(Color.GREEN, Color.WHITE, 1-((double)i) / snake.getSnakeParts().size()));
+                g.setColor(ColorUtil.gradient(Color.GREEN, Color.WHITE, 1-((double)i) / (snake.getSnakeParts().size()*2)));
                 drawSquare(g, p.x, p.y, size);
             }
         }
