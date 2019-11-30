@@ -21,8 +21,11 @@ import java.util.Random;
  */
 
 @SuppressWarnings("All")
-public class Matrix implements Copyable<Matrix>, Serializable
-{
+public class Matrix implements Copyable<Matrix>, Serializable {
+
+    /**
+     * Id used for serializing the Matrix object
+     */
     private static final long serialVersionUID = 2L;
 
     /**
