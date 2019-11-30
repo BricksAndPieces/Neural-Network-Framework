@@ -41,10 +41,9 @@ public class NeuralNet implements Copyable<NeuralNet>, Serializable {
 
     public double[] feedForward(double[] input) {
         Matrix matrix = new Matrix(input);
-        for(int i = 0; i < weights.length-1; i++)
-            matrix = matrix.dotProduct(weights[i]).add(biases[i]).function(actFunc); // todo add 2nd function to settings
+        for(int i = 0; i < weights.length; i++)
+            matrix = matrix.dotProduct(weights[i]).add(biases[i]).function(actFunc);
 
-        matrix = matrix.dotProduct(weights[weights.length-1]).add(biases[biases.length-1]).function(Function.SIGMOID);
         double[] output = new double[layers[layers.length-1]];
         for(int i = 0; i < output.length; i++)
             output[i] = matrix.getData()[0][i];
