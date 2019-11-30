@@ -2,6 +2,11 @@ package neuralnetwork.core;
 
 import java.io.Serializable;
 
+/**
+ * Functional interface that represents different mathematical
+ * functions. These are used as activation functions or during training.
+ */
+@FunctionalInterface
 @SuppressWarnings("All")
 public interface Function extends Serializable  {
 
@@ -13,7 +18,9 @@ public interface Function extends Serializable  {
 
     Function STEP = v -> v > 0 ? 1 : 0;
 
-    Function SIGMOID = v -> (1 / (1 + Math.pow(Math.E, -v)));
+    Function SIGMOID = v -> 1 / (1 + Math.pow(Math.E, -v));
+
+    Function CUSTOM_SIGMOID =  v -> 1 / (1 + Math.pow(Math.E, -4.9 * v));
 
     Function TANH = Math::tanh;
 

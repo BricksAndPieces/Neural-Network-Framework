@@ -373,12 +373,24 @@ public class Matrix implements Copyable<Matrix>, Serializable
         return data[0].length;
     }
 
-    // todo code commenting
+    /**
+     * @param i
+     * The index of the row
+     *
+     * @return
+     * Returns a row from the matrix as a single dimensional array
+     */
     public double[] getRow(int i) {
         return data[i];
     }
 
-    // todo commenting
+    /**
+     * @param i
+     * The index of the column
+     *
+     * @return
+     * Returns a column from the matrix as a single dimensional array
+     */
     public double[] getCol(int i) {
         double[] col = new double[rows()];
         for(int r = 0; r < col.length; r++)
