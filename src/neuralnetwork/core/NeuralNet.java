@@ -13,8 +13,8 @@ public class NeuralNet implements Copyable<NeuralNet>, Serializable {
     protected Matrix[] weights; // Multi dimensional - Each matrix contains all weights between two layers
     protected Matrix[] biases; // One dimensional - Each matrix contains a list of biases for each 'output' node
 
-    private Function actFunc;
-    private int[] layers;
+    private final Function actFunc;
+    private final int[] layers;
 
     public NeuralNet(NeuralNetSettings settings) {
         this(settings.getLayers(), settings.getActFunc());
