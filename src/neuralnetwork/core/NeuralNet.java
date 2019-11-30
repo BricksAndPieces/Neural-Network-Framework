@@ -101,6 +101,13 @@ public class NeuralNet implements Copyable<NeuralNet>, Serializable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof NeuralNet)) return false;
+        return Arrays.equals(weights, ((NeuralNet) obj).weights) &&
+               Arrays.equals(biases, ((NeuralNet) obj).biases);
+    }
+
+    @Override
     public String toString() {
         return "NeuralNet[layers="+Arrays.toString(layers)+"]";
     }

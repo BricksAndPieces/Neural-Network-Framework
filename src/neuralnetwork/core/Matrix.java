@@ -417,6 +417,30 @@ public class Matrix implements Copyable<Matrix>, Serializable
     }
 
     /**
+     * @param obj
+     * Object to check is equal to current Matrix
+     *
+     * @return
+     * Returns whether of not the values of this Matrix are equal to the
+     * values of the other object (should be a Matrix)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Matrix)) return false;
+        if(rows() != ((Matrix) obj).rows() || cols() != ((Matrix) obj).cols())
+            return false;
+
+        for(int r = 0; r < rows(); r++) {
+            for(int c = 0; c < cols(); c++) {
+                if(data[r][c] != ((Matrix) obj).data[r][c])
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * @return
      * Returns String representation of the Matrix for easy debugging
      */
