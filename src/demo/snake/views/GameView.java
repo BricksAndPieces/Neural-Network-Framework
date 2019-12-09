@@ -19,26 +19,35 @@ public class GameView extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // Arena frame
+        g.setColor(Color.white);
+        g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+
         if(snake != null) {
             int size = getWidth() / snake.getWorldWidth();
 
-            // Food
+            // Food drawing
             if(snake.getFoodLocation() != null) {
                 g.setColor(Color.red);
                 drawSquare(g, snake.getFoodLocation().x, snake.getFoodLocation().y, size);
             }
 
-            // Snake
-            for(int i = 0; i < snake.getSnakeParts().size(); i++) {
-                Point p = snake.getSnakeParts().get(i);
+            // Head drawing
+            if(snake.getBodyLocations().isEmpty()) {
+                g.setColor(Color.green);
+                drawSquare(g, snake.getHeadLocation().x, snake.getHeadLocation().y, size);
+                return;
+            }
+
+            // Body drawing
+            ((Graphics2D)g).setStroke(new BasicStroke((int)(size*0.95)));
+            for(int i = 0; i < snake.getSnakeParts().size()-1; i++) {
+                Point p1 = snake.getSnakeParts().get(i);
+                Point p2 = snake.getSnakeParts().get(i+1);
                 g.setColor(ColorUtil.gradient(Color.GREEN, Color.WHITE, 1-(i / (snake.getSnakeParts().size()*1.0))));
-                drawSquare(g, p.x, p.y, size);
+                g.drawLine(p1.x*size+size/2, p1.y*size+size/2, p2.x*size+size/2, p2.y*size+size/2);
             }
         }
-
-        // Arena frame
-        g.setColor(Color.white);
-        g.drawRect(0, 0, getWidth()-1, getHeight()-1);
     }
 
     public void setSnake(Snake snake) {

@@ -64,6 +64,7 @@ public class StatsView extends JPanel {
 
     public void reset() {
         graph.clear();
+        graph.add(new Point());
         graphPanel.repaint();
     }
 
