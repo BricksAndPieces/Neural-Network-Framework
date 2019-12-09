@@ -40,7 +40,7 @@ public class GameView extends JPanel {
             }
 
             // Body drawing
-            ((Graphics2D)g).setStroke(new BasicStroke((int)(size*0.95)));
+            ((Graphics2D)g).setStroke(new BasicStroke((int)(size*0.98)));
             for(int i = 0; i < snake.getSnakeParts().size()-1; i++) {
                 Point p1 = snake.getSnakeParts().get(i);
                 Point p2 = snake.getSnakeParts().get(i+1);
