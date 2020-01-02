@@ -74,6 +74,7 @@ public class Visualizer extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        double accuracy = 0;
 
         if(timer.isRunning()) {
             double correct = 0;
@@ -86,14 +87,7 @@ public class Visualizer extends JPanel {
                 if(net.feedForward(new double[]{p.x * 1.0 / getWidth(), p.y * 1.0 / getHeight()})[0] > 0.5)
                     correct++;
 
-            double accuracy = correct / (groupA.size() + groupB.size());
-
-            if(accuracy == 1 && Math.random() < 0.05) {
-                timer.stop(); // stop once 100% accuracy but give time to rearrange
-                groupA.clear();
-                groupB.clear();
-                return;
-            }
+            accuracy = correct / (groupA.size() + groupB.size());
 
             for(int i = 0; i < 10; i++) {
                 for(Point p : groupA)
@@ -124,6 +118,12 @@ public class Visualizer extends JPanel {
         g.setColor(Color.blue);
         for(Point p : groupB)
             g.fillRect(p.x-5, p.y-5, 10, 10);
+
+        if(accuracy == 1) {
+            timer.stop();
+            groupA.clear();
+            groupB.clear();
+        }
     }
 
     public void stop() {
