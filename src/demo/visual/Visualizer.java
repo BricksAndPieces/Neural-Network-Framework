@@ -97,13 +97,14 @@ public class Visualizer extends JPanel {
                     net.train(new double[]{p.x * 1.0 / getWidth(), p.y * 1.0 / getHeight()}, new double[]{1});
             }
 
-            for(int x = 0; x < getWidth(); x+=2) {
-                for(int y = 0; y < getHeight(); y+=2) {
-                    double predict = net.feedForward(new double[]{(x+1) * 1.0 / getWidth(), (y+1) * 1.0 / getHeight()})[0];
+            int unit = 2; // make sure even
+            for(int x = 0; x < getWidth(); x+=unit) {
+                for(int y = 0; y < getHeight(); y+=unit) {
+                    double predict = net.feedForward(new double[]{(x+unit/2) * 1.0 / getWidth(), (y+unit/2) * 1.0 / getHeight()})[0];
                     if(predict < 0.5) g.setColor(Color.red.darker().darker());
                     else g.setColor(Color.blue.darker().darker());
 
-                    g.fillRect(x-1, y-1, 2, 2);
+                    g.fillRect(x-unit/2, y-unit/2, unit, unit);
                 }
             }
 
