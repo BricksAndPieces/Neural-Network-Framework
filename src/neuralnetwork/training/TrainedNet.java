@@ -33,8 +33,7 @@ public class TrainedNet extends NeuralNet {
         }
 
         Matrix target = new Matrix(correct);
-        for(int i = weights.length; i > 0; i--)
-        {
+        for(int i = weights.length; i > 0; i--) {
             // Calculate Error
             Matrix error = target.subtract(layers[i]);
 
