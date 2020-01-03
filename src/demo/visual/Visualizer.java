@@ -22,7 +22,7 @@ public class Visualizer extends JPanel {
     private static final Function derivative = Function.SIGMOID_DER;
     private static final double learningRate = 0.05;
 
-    private final TrainedNet net = new TrainedNet(layers, activation, derivative, learningRate);
+    private TrainedNet net = new TrainedNet(layers, activation, derivative, learningRate);;
     private final Timer timer = new Timer(50, e -> repaint());
 
     private final List<Point> groupA = new ArrayList<>();
@@ -48,6 +48,7 @@ public class Visualizer extends JPanel {
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_SPACE) {
                     if(!timer.isRunning()) {
+                        net = new TrainedNet(layers, activation, derivative, learningRate);
                         timer.start();
                     }else {
                         timer.stop();
@@ -109,7 +110,7 @@ public class Visualizer extends JPanel {
             }
 
             g.setColor(Color.WHITE);
-            g.drawString("Accuracy: " + accuracy + "%", 5, 20);
+            g.drawString("Accuracy: " + (int)(accuracy*100) + "%", 5, 20);
         }
 
         g.setColor(Color.red);
